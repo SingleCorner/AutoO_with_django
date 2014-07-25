@@ -1,0 +1,123 @@
+html, body {
+	background: #EEE;
+}
+
+body > footer {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 20px;
+	text-align: center;
+	font-family: "Microsoft Yahei", Tahoma, Simsun;
+	font-size: 12px;
+	color: #FFF;
+	text-shadow: 0px 0px 5px rgba(0, 0, 0, 1.00);
+	-webkit-text-shadow: 0px 0px 5px rgba(0, 0, 0, 1.00);
+	-moz-text-shadow: 0px 0px 5px rgba(0, 0, 0, 1.00);
+	-ms-text-shadow: 0px 0px 5px rgba(0, 0, 0, 1.00);
+	-o-text-shadow: 0px 0px 5px rgba(0, 0, 0, 1.00);
+}
+
+#MSIE_Warning {
+	border: 2px solid #990000;
+	background: #F9F2A7;
+	padding: 10px;
+	margin: 10px auto;
+	width: 800px;
+}
+
+#USER_login {
+	position: absolute;
+	width: 400px;
+	height: 100px;
+	padding: 260px 200px 40px;
+	top: 50%;
+	left: 50%;
+	margin: -200px 0 0 -400px;
+}
+
+#USER_login form {
+	height: 50px;
+}
+
+#USER_login ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+#USER_login ul > li {
+	display: block;
+	float: left;
+	width: 180px;
+}
+
+#USER_login ul > li > label {
+	display: block;
+	height: 20px;
+	font-family: "Microsoft Yahei", Tahoma, Simsun;
+	font-size: 12px;
+	color: #999;
+}
+
+#USER_login ul > li > input[type="text"],
+#USER_login ul > li > input[type="password"] {
+	display: block;
+	width: 170px;
+	height: 28px;
+	border: 1px solid #DDD;
+	-webkit-border-radius: 1px;
+	-moz-border-radius: 1px;
+	-ms-border-radius: 1px;
+	-o-border-radius: 1px;
+	border-radius: 1px;
+	font-family: "Microsoft Yahei", Tahoma, Simsun;
+	font-size: 14px;
+	color: #999;
+	background: #FFF;
+	padding: 0;
+	-webkit-transition: -webkit-box-shadow 500ms, border 500ms;
+	-moz-transition: -moz-box-shadow 500ms, border 500ms;
+	-ms-transition: -ms-box-shadow 500ms, border 500ms;
+	-o-transition: -o-box-shadow 500ms, border 500ms;
+	transition: box-shadow 500ms, border 500ms;
+}
+
+#USER_login ul > li > input[type="text"]:focus,
+#USER_login ul > li > input[type="password"]:focus {
+	outline: none;
+	border-color: #20C3F9;
+	-webkit-box-shadow: 0px 0px 7px rgba(0, 163, 217, 0.50);
+	-moz-box-shadow: 0px 0px 7px rgba(0, 163, 217, 0.50);
+	-ms-box-shadow: 0px 0px 7px rgba(0, 163, 217, 0.50);
+	-o-box-shadow: 0px 0px 7px rgba(0, 163, 217, 0.50);
+	box-shadow: 0px 0px 7px rgba(0, 163, 217, 0.50);
+}
+
+#USER_login ul > li#USER_login_buttons {
+	width: 25px;
+	margin: 0;
+	padding-top: 20px;
+}
+
+#USER_login ul > li#USER_login_buttons #USER_login_submit {
+	display: block;
+	content: '';
+	width: 26px;
+	height: 0px;
+	margin: 0;
+	padding: 30px 0 0 0;
+	border: none;
+	background: url(../img/login-submit.png) center center no-repeat;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+#USER_login #USER_login_status {
+	margin-top: 20px;
+	font-family: "Microsoft Yahei", Tahoma, Simsun;
+	font-size: 12px;
+	text-align: center;
+	color: #555;
+}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Language" content="zh-cn" />
+  <meta http-equiv="Content-Type" content="text/html" />
+  <meta http-equiv="X-UA-Compatible" content="IE=10" />
+  <meta name="description" content="网站预发布平台" />
+  <title></title>
+  <link rel="stylesheet" href="static/css/login.css" />
+  <script src="/static/js/jquery-1.7.2.min.js"></script>
+  <script src="/static/js/jquery.sha1.js"></script>
+  <script src="/static/js/login.js"></script>
+</head>
+<body>
+  <div id="USER_login">
+  <form id="USER_login_form" action="?a=login" method="post">
+    <input type="hidden" id="USER_login_timestamp" value="" >
+      <ul>
+	<li>
+          <label for="USER_login_user">工号</label>
+          <input type="text" name="username" id="USER_login_user" maxlength="8" />
+        </li>
+        <li>
+          <label for="USER_login_pswd">密码</label>
+          <input type="password" name="password" id="USER_login_pswd" autocomplete="off" />
+        </li>
+        <li id="USER_login_buttons">
+	  <input type="submit" value="登录" id="USER_login_submit" title="登录" />
+        </li>
+      </ul>
+    </form>
+    <div id="USER_login_status"><?php echo $user_login_error; ?></div>
+  </div>
+  <footer>Copyright © 2014 - 2017 </footer>
+</body>
+</html>
+
