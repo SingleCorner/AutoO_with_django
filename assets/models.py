@@ -1,3 +1,4 @@
+# coding:utf8
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -25,45 +26,3 @@ class Account(models.Model):
     class Meta:
         managed = False
         db_table = 'Account'
-
-class Backup(models.Model):
-    id = models.IntegerField(primary_key=True)
-    wid = models.ForeignKey('Websites', db_column='wid')
-    status = models.IntegerField(blank=True, null=True)
-    datetime = models.DateTimeField(blank=True, null=True)
-    filepath = models.CharField(max_length=100, blank=True)
-    class Meta:
-        managed = False
-        db_table = 'Backup'
-
-class Projmain(models.Model):
-    id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=40, blank=True)
-    alias = models.CharField(max_length=40, blank=True)
-    timestamp = models.DateField(blank=True, null=True)
-    class Meta:
-        managed = False
-        db_table = 'ProjMain'
-
-class Projsub(models.Model):
-    id = models.IntegerField(primary_key=True)
-    mid = models.ForeignKey(Projmain, db_column='mid', blank=True, null=True)
-    name = models.CharField(max_length=40, blank=True)
-    class Meta:
-        managed = False
-        db_table = 'ProjSub'
-
-class Websites(models.Model):
-    id = models.IntegerField(primary_key=True)
-    sid = models.ForeignKey(Projsub, db_column='sid')
-    name = models.CharField(max_length=40, blank=True)
-    address = models.CharField(max_length=40, blank=True)
-    upload = models.CharField(max_length=20, blank=True)
-    backup = models.CharField(max_length=20, blank=True)
-    release = models.CharField(max_length=40, blank=True)
-    type = models.IntegerField(blank=True, null=True)
-    path = models.CharField(max_length=60, blank=True)
-    class Meta:
-        managed = False
-        db_table = 'WebSites'
-

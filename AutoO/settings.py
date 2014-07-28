@@ -32,9 +32,9 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'assets'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -49,6 +49,9 @@ MIDDLEWARE_CLASSES = (
 TEMPLATE_DIRS = (
     os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),
 )
+TEMPLATE_CONTEXT_PROCESSORS = {
+    'django.core.context_processors.request',
+}
 
 STATICFILES_DIRS = (  
     'static',  
@@ -58,6 +61,9 @@ STATIC_ROOT = os.path.join(BASE_DIR,'AutoO/static')
 ROOT_URLCONF = 'AutoO.urls'
 
 WSGI_APPLICATION = 'AutoO.wsgi.application'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.file'
+SESSION_FILE_PATH = '/tmp'
 
 
 # Database

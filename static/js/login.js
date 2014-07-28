@@ -63,7 +63,6 @@ $(document).ready(function() {
 				$('#USER_login_user').focus();
 				$('#USER_login_pswd').val('');
 				$('#USER_login_status').html(data.responseText);
-				//$('#USER_login_status').html("程序挂了");
 
 			},
 			dataType: 'json'
