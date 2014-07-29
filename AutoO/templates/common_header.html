@@ -7,27 +7,29 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=9" />
 	<meta name="description" content="自动化运维平台" />
 	<title></title>
-	<link rel="stylesheet" href="http://monitor.server/css/css.css" />
-	<script src="http://monitor.server/js/jquery-1.7.2.min.js"></script>
-	<script src="http://monitor.server/js/jquery.sha1.js"></script>
-	<script src="http://monitor.server/js/app.js"></script>
+	<link rel="stylesheet" href="/static/css/css.css" />
+  <script src="/static/js/jquery-1.7.2.min.js"></script>
+  <script src="/static/js/jquery.sha1.js"></script>
+	<script src="/static/js/app.js"></script>
 </head>
 <body scroll=auto>
 	<!-- 顶栏开始 -->
 	<header id="APP_top">
 		<!-- LOGO开始 -->
 		<div id="APP_top_logo">
-			<a href="/"><img src="http://monitor.server/img/logo.png" /></a>
+			<a href="/"><img src="/static/img/logo.png" /></a>
 		</div>
 		<!-- LOGO结束 -->
 		<!-- 用户区开始 -->
-		<div id="APP_top_user"> {{ name }} 使用ing <a href="/logout">安全退出</a></div>
+		<div id="APP_top_user"> {{ request.session.user_name }} 系统使用中 <a href="/logout">安全退出</a></div>
 		<!-- 用户区结束 -->
 		<!-- 导航区开始 -->
 		<nav id="APP_top_nav">
 			<ul>
 				<li><a href="./">首页</a></li>
+				{% if request.session.user_admin %}
 				<li><a href="./admin.php">后台管理</a></li>
+				{% endif %}
 				<li><a href="?module=account">账号管理</a></li>
 				<!--<li><a href="?module=proj">项目管理</a></li>
 				<li><a href="?module=web">网站管理</a></li>-->

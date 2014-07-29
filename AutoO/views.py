@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.template.loader import get_template
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
@@ -10,23 +11,28 @@ from assets.models import Account
 
 def USER_LOGIN(request):
     if 'loginToken' in request.session:
-        t = render_to_response('index.html',{'name': request.session['user_name']})
+        t = render_to_response('index.html',{'name': request.session['user_name']}, context_instance = RequestContext(request))
         return HttpResponse(t)
     else:
         if 'a' in request.GET and request.GET['a'] == "login":
           user = request.POST['username']
           passwd = request.POST['password']
           user_query = Account.objects.filter(account = user)
-          local_passwd = hashlib.sha1(user_query[0].passwd + str(request.session['loginTime'])).hexdigest()
-          if passwd == local_passwd:
+          if user_query:
+            local_passwd = hashlib.sha1(user_query[0].passwd + str(request.session['loginTime'])).hexdigest()
+          else:
+            local_passwd = ""
+          if passwd == local_passwd and local_passwd != "":
             result = {}
             result['code'] = 0
-            request.session['loginToken'] = "123456"
+            request.session['loginToken'] = "True"
             request.session['user_name'] = user_query[0].name
+            if user_query[0].authorize == "1":
+              request.session['user_admin'] = "yes"
           else:
             result = {}
             result['code'] = -1
-            result['message'] = "Error: Username or Password"
+            result['message'] = "用户验证出错，请联系管理员"
           return HttpResponse(json.dumps(result), content_type="application/json")
           #return HttpResponse(local_passwd)
         else:
@@ -41,12 +47,6 @@ def USER_LOGIN(request):
 def USER_LOGOUT(request):
     request.session.clear()
     return HttpResponseRedirect('/')
-
-def add_hours(request,offset):
-    offset = int(offset)
-    dt = datetime.datetime.now() + datetime.timedelta(hours=offset)
-    html = "<html><body>In %s hour(s), it will be %s.</body></html>" % (offset, dt)
-    return HttpResponse(html)
 
 def display_meta(request):
 

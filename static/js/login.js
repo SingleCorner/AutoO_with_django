@@ -9,7 +9,7 @@ $(document).ready(function() {
 		var time = $('#USER_login_timestamp').val();
 		
 		// 检查输入
-		if (user.length != 4) {
+		if (user.length < 4 || user.length > 5) {
 			$('#USER_login_status').html("No No No,工号貌似错了>_< ");
 			$('#USER_login_user').focus();
 			return false;
