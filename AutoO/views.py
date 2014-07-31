@@ -17,7 +17,7 @@ def USER_LOGIN(request):
         if 'a' in request.GET and request.GET['a'] == "login":
           user = request.POST['username']
           passwd = request.POST['password']
-          user_query = Account.objects.filter(account = user)
+          user_query = Account.objects.using('master').filter(account = user)
           if user_query:
             local_passwd = hashlib.sha1(user_query[0].passwd + str(request.session['loginTime'])).hexdigest()
           else:

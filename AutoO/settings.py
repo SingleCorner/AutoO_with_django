@@ -77,6 +77,13 @@ DATABASES = {
         'NAME': 'AutoO',
         'USER': 'AutoO',
         'PASSWORD': 'AMITKEOSFNRP',
+    },
+    'master': {
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': 'localhost',
+        'NAME': 'AutoO',
+        'USER': 'AutoO',
+        'PASSWORD': 'AMITKEOSFNRP',
     }
 }
 

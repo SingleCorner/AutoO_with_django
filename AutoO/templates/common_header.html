@@ -28,12 +28,10 @@
 			<ul>
 				<li><a href="./">首页</a></li>
 				{% if request.session.user_admin %}
-				<li><a href="./admin.php">后台管理</a></li>
+				<li><a href="./admin">后台管理</a></li>
+				<li><a href="./admin/account">账号管理</a></li>
 				{% endif %}
-				<li><a href="?module=account">账号管理</a></li>
-				<!--<li><a href="?module=proj">项目管理</a></li>
-				<li><a href="?module=web">网站管理</a></li>-->
-				<li><a href="?module=asset">资产管理</a></li>
+				<li><a href="./asset">资产查询</a></li>
 			</ul>
 		</nav>
 		<!-- 导航区结束 -->
