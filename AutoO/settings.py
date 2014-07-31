@@ -79,11 +79,12 @@ DATABASES = {
         'PASSWORD': 'AMITKEOSFNRP',
     },
     'master': {
-        'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'localhost',
-        'NAME': 'AutoO',
-        'USER': 'AutoO',
-        'PASSWORD': 'AMITKEOSFNRP',
+        'ENGINE': 'django.db.backends.oracle',
+        'HOST': '10.42.50.152',
+        'PORT': '1521'
+        'NAME': 'orcl',
+        'USER': 'scott',
+        'PASSWORD': 'tiger',
     }
 }
 

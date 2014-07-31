@@ -17,7 +17,7 @@ def USER_LOGIN(request):
         if 'a' in request.GET and request.GET['a'] == "login":
           user = request.POST['username']
           passwd = request.POST['password']
-          user_query = Account.objects.using('master').filter(account = user)
+          user_query = Account.objects.filter(account = user)
           if user_query:
             local_passwd = hashlib.sha1(user_query[0].passwd + str(request.session['loginTime'])).hexdigest()
           else:
@@ -49,10 +49,12 @@ def USER_LOGOUT(request):
     return HttpResponseRedirect('/')
 
 def display_meta(request):
-
-    values = request.META.items()
-    values.sort()
-    html = []
-    for k, v in values:
+    if'loginToken' in request.session:
+      values = request.META.items()
+      values.sort()
+      html = []
+      for k, v in values:
         html.append('<tr><td>%s</td><td>%s</td></tr>' % (k, v))
-    return HttpResponse('<table>%s</table>' % '\n'.join(html))
+      return HttpResponse('<table>%s</table>' % '\n'.join(html))
+    else:
+        return HttpResponseRedirect('/')
