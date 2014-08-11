@@ -34,7 +34,8 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'assets'
+    'common',
+    'AutoO.apps',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -81,7 +82,7 @@ DATABASES = {
     'master': {
         'ENGINE': 'django.db.backends.oracle',
         'HOST': '10.42.50.152',
-        'PORT': '1521'
+        'PORT': '1521',
         'NAME': 'orcl',
         'USER': 'scott',
         'PASSWORD': 'tiger',

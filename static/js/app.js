@@ -32,6 +32,8 @@ function navbar_ajust() {
 	}
 }
 
+
+
 /*
  * 刷新后不改变页面查询数据
  * 设置主项目ID
@@ -43,28 +45,6 @@ function setMainID(id) {
 		url: './?module=set&action=mid',
 		data: {
 			'mid': mid
-		},
-		success: function(data, status, xhr) {
-			if (data.code == 1) {
-				window.location = "./";
-			} else if (data.code == 0) {
-				alert(data.message);
-			}
-		},
-		dataType: 'json'
-	});
-}
-/*
- * 刷新后不改变页面查询数据
- * 设置子项目ID
- */
-function setSubID(id) {
-	var sid = id;
-	$.ajax({
-		type: 'POST',
-		url: './?module=set&action=sid',
-		data: {
-			'sid': sid
 		},
 		success: function(data, status, xhr) {
 			if (data.code == 1) {
