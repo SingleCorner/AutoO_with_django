@@ -1,0 +1,63 @@
+{% extends "user_base.html"%}
+
+{% block app %}
+      <div class="title_container">
+        <span class="title_more">
+          <form id="query_form">
+            <input type="text" id="query_name" placeholder="暂时无法查询" />
+            <!--<input type="submit" value="查询" />-->
+          </form>
+        </span>
+      </div>
+      <div>
+			<div id="APP_listStaff">
+				<div class="title_container"><h1>资产列表</h1></div><br />
+				<table class="datatable">
+					<tr>
+						<th>项目</th>
+						<th>IP</th>
+						<th>描述</th>
+						<th>类型</th>
+            <th>CPU(核)</th>
+            <th>MEM(G)</th>
+            <th>DISK(G)</th>
+						<th>应用</th>
+						<th>状态</th>
+						<th>cacti</th>
+						<th>nagios</th>
+					</tr>
+          {% for data in servers %}
+            <tr>
+              <td>{{ data.pid.name }}</td>
+              <td>{{ data.ip }}</td>
+              <td title="{{ data.desc }}">{{ data.desc }}</td>
+              <td>{{ data.type }}</td>
+              <td>{{ data.cpu }}</td>
+              <td>{{ data.mem }}</td>
+              <td>{{ data.disk }}</td>
+							<td>{{ data.srv }}</td>
+							<td>
+								{% ifequal data.status 1 %}
+								在用
+								{% else %}
+								未用
+								{% endifequal %}
+							</td>
+              <td>
+								{% ifequal data.cacti '1' %}
+								已添加
+								{% else %}
+								未添加
+								{% endifequal %}
+							</td>
+              <td>
+								{% ifequal data.nagios '1' %}
+								已添加
+								{% else %}
+								未添加
+								{% endifequal %}
+							</td>
+            </tr>
+          {% endfor %}
+      </div>
+{% endblock %}

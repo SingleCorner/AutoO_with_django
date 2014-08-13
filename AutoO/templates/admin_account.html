@@ -14,7 +14,7 @@
 				<form id="Accnt_add">
 					工号<input type="text" size="5" id="Accnt_id" />
 					姓名<input type="text" size="5" id="Accnt_name" />
-					密码<input type="text" size="20" id="Accnt_pass" />
+					密码<input type="password" size="20" id="Accnt_pass" />
 					管理员<input type="radio" name="Accnt_mgr" value=1>是
 						  <input type="radio" name="Accnt_mgr" value=0>否
 					项目权限<input type="text" size="4" id="Accnt_proj">
@@ -23,15 +23,15 @@
 				</form>
 			</div>
 			<div id="APP_listStaff">
-				<div class="title_container"><h1>在库账号</h1></div><br />
+				<div class="title_container"><h1>小伙伴</h1></div><br />
 				<table class="datatable">
 					<tr>
 						<th>工号</th>
 						<th>姓名</th>
-						<th>使用状态</th>
-						<th>管理员</th>
-						<th>项目权限</th>
-						<th></th>
+						<th>状态</th>
+						<th>后台</th>
+						<th>项目</th>
+						<th>操作</th>
 					</tr>
           {% for accnt in account_list %}
             <tr>
@@ -39,9 +39,9 @@
               <td>{{ accnt.name }}</td>
               <td>{{ accnt.status }}</td>
             {% ifequal accnt.authorize '1' %}
-              <td>是</td>
+              <td>允许</td>
             {% else %}
-              <td>否</td>
+              <td>拒绝</td>
             {% endifequal %}
               <td>{{ accnt.module }}</td>
               <td><button class="red" onclick="frzAccount({{ accnt.id }})">账号冻结/解冻</button></td>

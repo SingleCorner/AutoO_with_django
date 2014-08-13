@@ -20,3 +20,21 @@ class Project(models.Model):
     class Meta:
         managed = False
         db_table = 'project'
+
+class Server(models.Model):
+    id = models.IntegerField(primary_key=True)
+    pid = models.ForeignKey(Project, db_column='pid', blank=True, null=True)
+    ip = models.CharField(max_length=15, blank=True)
+    cpu = models.CharField(max_length=4, blank=True)
+    mem = models.CharField(max_length=4, blank=True)
+    disk = models.CharField(max_length=4, blank=True)
+    raid = models.CharField(max_length=2, blank=True)
+    type = models.CharField(max_length=4, blank=True)
+    srv = models.CharField(max_length=6, blank=True)
+    desc = models.CharField(max_length=20, blank=True)
+    status = models.IntegerField(blank=True, null=True)
+    cacti = models.CharField(max_length=4, blank=True)
+    nagios = models.CharField(max_length=4, blank=True)
+    class Meta:
+        managed = False
+        db_table = 'server'

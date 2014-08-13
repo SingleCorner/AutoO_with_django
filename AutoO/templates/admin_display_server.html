@@ -1,0 +1,75 @@
+{% extends "admin_base.html" %}
+
+{% block app %}
+				<div>本次更改的ID为{{ queryset.id }} <br> &nbsp;</div>
+				<form id="Asset_upt">
+					<input id="Asset_id" type="hidden" value="{{ queryset.id }}">
+					本资产所属项目
+					<select id="Asset_proj" name="Asset_proj">
+						<option value="{{ queryset.pid.id }}">{{ queryset.pid.name }}</option>
+					</select>暂时不支持项目变更操作<br>
+					IP地址<input type="text" size="15" id="Asset_ip" value="{{ queryset.ip }}"><br>
+					CPU核数<input type="text" size="8" id="Asset_cpu" value="{{ queryset.cpu }}"><br>
+					内存（G）<input type="text" size="8" id="Asset_mem" value="{{ queryset.mem }}"><br>
+					硬盘（G）<input type="text" size="8" id="Asset_disk" value="{{ queryset.disk }}"><br>
+					<select id="Asset_type" name="Asset_type">
+						{% ifequal queryset.type '物理机' %}
+						<option value="1" selected>物理机</option>
+						<option value="2">虚拟机</option>
+						{% else %}
+						<option value="1">物理机</option>
+						<option value="2" selected>虚拟机</option>
+						{% endifequal %}
+					</select>
+					<select id="Asset_srv" name="Asset_srv">
+						<option>应用类型</option>
+						{% ifequal queryset.srv 'APP' %}
+						<option value="APP" selected>APP</option>
+						{% else %}
+						<option value="APP">APP</option>
+						{% endifequal %}
+						{% ifequal queryset.srv 'DB' %}
+						<option value="DB" selected>DB</option>
+						{% else %}
+						<option value="DB">DB</option>
+						{% endifequal %}
+					</select><br>
+					描述<input type="text" size="15" id="Asset_desc" value="{{ queryset.desc }}"><br>
+					服务器状态
+					<select id="Asset_status" name="Asset_status">
+						{% ifequal queryset.status 1 %}
+						<option value="1" selected>在用</option>
+						{% else %}
+						<option value="1">在用</option>
+						{% endifequal %}
+						{% ifequal queryset.status 0 %}
+						<option value="0" selected>待释放</option>
+						{% else %}
+						<option value="0">待释放</option>
+						{% endifequal %}
+					</select><br>
+					CACTI
+					<select id="Asset_cacti" name="Asset_cacti">
+						{% ifequal queryset.cacti '1' %}
+						<option value="1" selected>启用</option>
+						<option value="0">待释放</option>
+						{% else %}
+						<option value="1">启用</option>
+						<option value="0" selected>待释放</option>
+						{% endifequal %}
+					</select><br>
+					NAGIOS
+					<select id="Asset_nagios" name="Asset_nagios">
+						{% ifequal queryset.nagios '1' %}
+						<option value="1" selected>启用</option>
+						<option value="0">待释放</option>
+						{% else %}
+						<option value="1">启用</option>
+						<option value="0" selected>待释放</option>
+						{% endifequal %}
+					</select><br>
+					<input type="submit" value="修改资产" />
+					<span id="Asset_stat"></span>
+				</form>
+			</div>
+{% endblock %}

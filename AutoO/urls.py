@@ -23,7 +23,8 @@ urlpatterns += patterns('common.views',
 )
 
 urlpatterns += patterns('AutoO.views',
-    url(r'^admin/$', 'admin', {'module': '','action': ''}),
+    url(r'^admin/$', 'admin'),
+    url(r'^admin/\d$','admin_display'),
     url(r'^admin/(?P<module>.*)/(?P<action>.*)$', 'admin'),
     url(r'^asset/$', 'asset')
 )
