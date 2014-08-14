@@ -5,6 +5,7 @@ from django.shortcuts import render
 import hashlib
 import datetime, time
 import json
+import copy
 
 from apps.models import Project, Server
 
@@ -128,14 +129,68 @@ def admin(request, module="", action=""):
               return HttpResponse('无效ID')
             rsp = render(request, 'admin_display_server.html', locals())
             return HttpResponse(rsp)
-        else:         
+        else:
           result = {}
           result['code'] = 0
           result['message'] = "操作失败"
         return HttpResponse(json.dumps(result), content_type="application/json")
       else:
+        if 'query' in request.GET:
+          if request.session['query'].has_key('op'):
+            if 'pid' in request.POST:
+              if request.POST['pid'] == "":
+                try:
+                  request.session['query_data'].pop('pid')
+                except:
+                  a = 1
+              else:
+                request.session['query_data']['pid'] = request.POST['pid']
+            if 'ip' in request.POST:
+              if request.POST['ip'] == "":
+                try:
+                  request.session['query_data'].pop('ip')
+                except:
+                  a = 1
+              else:
+                request.session['query_data']['ip'] = request.POST['ip']
+            if 'srv' in request.POST:
+              if request.POST['srv'] == "":
+                try:
+                  request.session['query_data'].pop('srv')
+                except:
+                  a = 1
+              else:
+                request.session['query_data']['srv'] = request.POST['srv']
+            if 'status' in request.POST:
+              if request.POST['status'] == "":
+                try:
+                  request.session['query_data'].pop('status')
+                except:
+                  a = 1
+              else:
+                request.session['query_data']['status'] = request.POST['status']
+            exper = request.session['query_data']
+          else:
+            request.session['query'] = {'op':'true'}          
+            if 'pid' in request.POST and request.POST['pid'] != "":
+              request.session['query_data']['pid'] = request.POST['pid']
+            if 'ip' in request.POST and request.POST['ip'] != "":
+              request.session['query_data']['ip__contains'] = request.POST['ip']
+            if 'srv' in request.POST and request.POST['srv'] != "":
+              request.session['query_data']['srv'] = request.POST['srv']
+            if 'status' in request.POST and request.POST['status'] != "":
+              request.session['query_data']['status'] = request.POST['status']
+            exper = request.session['query_data']
+          servers = Server.objects.filter(**exper)
+        else:
+          try:
+            request.session['query'].clear()
+            request.session['query_data'].clear()
+          except:
+            request.session['query'] = {}
+            request.session['query_data'] = {}
+          servers = Server.objects.select_related().all()             
         projects = Project.objects.all()
-        servers = Server.objects.select_related().all()
         rsp = render(request, 'admin_servers.html', locals())
         return HttpResponse(rsp)
     else:

@@ -3,9 +3,26 @@
 {% block app %}
 				<div class="title_container">
 					<span class="title_more">
-						<form id="query_form">
-							<input type="text" id="query_name" placeholder="暂时无法查询" />
+						<form id="query_form" action="?query" method=post>
+							<select name="pid">
+								<option value="">所属项目</option>
+								{% for proj in projects %}
+								<option value="{{ proj.id }}">{{ proj.name }}</option>
+								{% endfor %}
+							</select>
+							<select name="srv">
+								<option value="">应用类型</option>
+								<option value="APP">APP</option>
+								<option value="DB">DB</option>
+							</select>
+							<input type="text" name="ip" placeholder="IP地址" />
+							<select name="status">
+								<option value="">所有</option>
+								<option value="0">待释放</option>
+								<option value="1" selected>在用</option>
+							</select>
 							<!--<input type="submit" value="查询" />-->
+							<input type="submit" value="查询">
 						</form>
 					</span>
 				</div>
@@ -28,7 +45,7 @@
 						<option value="2" selected>虚拟机</option>
 					</select>
 					<select id="Asset_srv" name="Asset_srv">
-						<option>应用类型</option>
+						<option value="">应用类型</option>
 						<option value="APP">APP</option>
 						<option value="DB">DB</option>
 					</select>
