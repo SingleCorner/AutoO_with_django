@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.core.paginator import Paginator
 
 import hashlib
 import datetime, time
@@ -137,6 +138,7 @@ def admin(request, module="", action=""):
       else:
         if 'query' in request.GET:
           if request.session['query'].has_key('op'):
+            request.session['query'] = {'op':'True'}
             if 'pid' in request.POST:
               if request.POST['pid'] == "":
                 try:
@@ -152,7 +154,7 @@ def admin(request, module="", action=""):
                 except:
                   a = 1
               else:
-                request.session['query_data']['ip'] = request.POST['ip']
+                request.session['query_data']['ip__contains'] = request.POST['ip']
             if 'srv' in request.POST:
               if request.POST['srv'] == "":
                 try:
@@ -181,14 +183,20 @@ def admin(request, module="", action=""):
             if 'status' in request.POST and request.POST['status'] != "":
               request.session['query_data']['status'] = request.POST['status']
             exper = request.session['query_data']
+          
           servers = Server.objects.filter(**exper)
+          pagin = Paginator(servers,20)
+          p = pagin.page(1)
+          if 'page' in request.GET:
+            if request.GET['page'] == "":
+              page = 1;
+            else:
+              page = int(request.GET['page'])
+          else:
+            a = 1
         else:
-          try:
-            request.session['query'].clear()
-            request.session['query_data'].clear()
-          except:
-            request.session['query'] = {}
-            request.session['query_data'] = {}
+          request.session['query'] = {}
+          request.session['query_data'] = {}
           servers = Server.objects.select_related().all()             
         projects = Project.objects.all()
         rsp = render(request, 'admin_servers.html', locals())

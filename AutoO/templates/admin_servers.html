@@ -29,6 +29,7 @@
 				<div>
 				<div class="title_container"><h1>新资产</h1></div><br>
 				<form id="Asset_add">
+					{{ request.session.query_data.pid }}
 					<select id="Asset_proj" name="Asset_proj">
 						<option>所属项目</option>
 						{% for proj in projects %}
@@ -68,7 +69,7 @@
 						<th>nagios</th>
 						<th>操作</th>
 					</tr>
-          {% for data in servers %}
+          {% for data in p %}
             <tr>
               <td>{{ data.pid.name }}</td>
               <td>{{ data.ip }}</td>
