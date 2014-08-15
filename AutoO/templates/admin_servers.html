@@ -29,7 +29,6 @@
 				<div>
 				<div class="title_container"><h1>新资产</h1></div><br>
 				<form id="Asset_add">
-					{{ request.session.query_data.pid }}
 					<select id="Asset_proj" name="Asset_proj">
 						<option>所属项目</option>
 						{% for proj in projects %}
@@ -69,7 +68,7 @@
 						<th>nagios</th>
 						<th>操作</th>
 					</tr>
-          {% for data in p %}
+          {% for data in data_list %}
             <tr>
               <td>{{ data.pid.name }}</td>
               <td>{{ data.ip }}</td>
@@ -103,5 +102,14 @@
 							</td>
             </tr>
           {% endfor %}
-      </div>
+				</table>
+				<p>&nbsp</p>
+				<center>
+					<a href="{{ url_fp }}"><<</a>
+					<a href="{{ url_pp }}"><</a>
+					<a href="{{ url_np }}">></a>
+					<a href="{{ url_lp }}">>></a>
+				</center>
+				<div>&nbsp</div>
+			</div>
 {% endblock %}

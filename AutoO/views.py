@@ -11,7 +11,93 @@ import copy
 from apps.models import Project, Server
 
 def asset(request):
-  servers = Server.objects.select_related().all()
+  if 'page' in request.GET and request.GET['page'].isdigit():
+    page_get = int(float(request.GET['page']))
+  else:
+    page_get = 1
+  if 'query' in request.GET:
+    if request.session['query'].has_key('op'):
+      request.session['query'] = {'op':'True'}
+      if 'pid' in request.POST:
+        if request.POST['pid'] == "":
+          try:
+            request.session['query_data'].pop('pid')
+          except:
+            a = 1
+        else:
+          request.session['query_data']['pid'] = request.POST['pid']
+      if 'ip' in request.POST:
+        if request.POST['ip'] == "":
+          try:
+            request.session['query_data'].pop('ip')
+          except:
+            a = 1
+        else:
+          request.session['query_data']['ip__contains'] = request.POST['ip']
+      if 'srv' in request.POST:
+        if request.POST['srv'] == "":
+          try:
+            request.session['query_data'].pop('srv')
+          except:
+            a = 1
+        else:
+          request.session['query_data']['srv'] = request.POST['srv']
+      if 'status' in request.POST:
+        if request.POST['status'] == "":
+          try:
+            request.session['query_data'].pop('status')
+          except:
+            a = 1
+        else:
+          request.session['query_data']['status'] = request.POST['status']
+      exper = request.session['query_data']
+    else:
+      request.session['query'] = {'op':'true'}          
+      if 'pid' in request.POST and request.POST['pid'] != "":
+        request.session['query_data']['pid'] = request.POST['pid']
+      if 'ip' in request.POST and request.POST['ip'] != "":
+        request.session['query_data']['ip__contains'] = request.POST['ip']
+      if 'srv' in request.POST and request.POST['srv'] != "":
+        request.session['query_data']['srv'] = request.POST['srv']
+      if 'status' in request.POST and request.POST['status'] != "":
+        request.session['query_data']['status'] = request.POST['status']
+      exper = request.session['query_data']
+    
+    servers = Server.objects.filter(**exper)
+  else:
+    request.session['query'] = {}
+    request.session['query_data'] = {}
+    servers = Server.objects.select_related().all()
+  pagin = Paginator(servers,20)
+  page_max = pagin.num_pages
+  if page_get > page_max:
+    page = page_max
+  else:
+    page = page_get
+  data_list = pagin.page(page)
+  if 'query' in request.GET:
+    url_fp = "?query&page=1"
+    if page <= 1:
+      url_pp = "?query&page=1"
+    else:
+      url_pp = "?query&page=" + str((page - 1))
+    if page >= page_max:
+      url_np = "?query&page=" + str(page_max)
+    else:
+      url_np = "?query&page=" + str((page + 1))
+    url_lp = "?query&page=" + str(page_max)
+  else:
+    url_fp = "?page=1"
+    if page <= 1:
+      url_pp = "?page=1"
+    else:
+      url_pp = "?page=" + str((page - 1))
+    if page >= page_max:
+      url_np = "?page=" + str(page_max)
+    else:
+      url_np = "?page=" + str((page + 1))
+    url_lp = "?page=" + str(page_max)
+  projects = Project.objects.all()
   rsp = render(request, 'user_assets.html', locals())
   return HttpResponse(rsp)
 
@@ -136,6 +222,10 @@ def admin(request, module="", action=""):
           result['message'] = "操作失败"
         return HttpResponse(json.dumps(result), content_type="application/json")
       else:
+        if 'page' in request.GET and request.GET['page'].isdigit():
+          page_get = int(float(request.GET['page']))
+        else:
+          page_get = 1
         if 'query' in request.GET:
           if request.session['query'].has_key('op'):
             request.session['query'] = {'op':'True'}
@@ -185,19 +275,39 @@ def admin(request, module="", action=""):
             exper = request.session['query_data']
           
           servers = Server.objects.filter(**exper)
-          pagin = Paginator(servers,20)
-          p = pagin.page(1)
-          if 'page' in request.GET:
-            if request.GET['page'] == "":
-              page = 1;
-            else:
-              page = int(request.GET['page'])
-          else:
-            a = 1
         else:
           request.session['query'] = {}
           request.session['query_data'] = {}
-          servers = Server.objects.select_related().all()             
+          servers = Server.objects.select_related().all()
+        pagin = Paginator(servers,20)
+        page_max = pagin.num_pages
+        if page_get > page_max:
+          page = page_max
+        else:
+          page = page_get
+        data_list = pagin.page(page)
+        if 'query' in request.GET:
+          url_fp = "?query&page=1"
+          if page <= 1:
+            url_pp = "?query&page=1"
+          else:
+            url_pp = "?query&page=" + str((page - 1))
+          if page >= page_max:
+            url_np = "?query&page=" + str(page_max)
+          else:
+            url_np = "?query&page=" + str((page + 1))
+          url_lp = "?query&page=" + str(page_max)
+        else:
+          url_fp = "?page=1"
+          if page <= 1:
+            url_pp = "?page=1"
+          else:
+            url_pp = "?page=" + str((page - 1))
+          if page >= page_max:
+            url_np = "?page=" + str(page_max)
+          else:
+            url_np = "?page=" + str((page + 1))
+          url_lp = "?page=" + str(page_max)
         projects = Project.objects.all()
         rsp = render(request, 'admin_servers.html', locals())
         return HttpResponse(rsp)
