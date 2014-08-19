@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-import hashlib
+from django.contrib.auth.hashers import *
+
+import hashlib, random, string
 import datetime, time
 import json
 
@@ -17,13 +19,14 @@ def USER_LOGIN(request):
           passwd = request.POST['password']
           user_query = Account.objects.filter(account = user, status = 1)
           if user_query:
-            local_passwd = hashlib.sha1(user_query[0].passwd + str(request.session['loginTime'])).hexdigest()
+            local_passwd = user_query[0].secpasswd
           else:
             local_passwd = ""
-          if passwd == local_passwd and local_passwd != "":
+          if check_password(passwd,local_passwd):
             result = {}
             result['code'] = 0
             request.session['loginToken'] = "True"
+            request.session['logoutAuth'] = string.join(random.sample(['z','y','x','w','v','u','t','s','r','q','p','o','n','m','l','k','j','i','h','g','f','e','d','c','b','a'], 4)).replace(' ','').upper()
             request.session['user_name'] = user_query[0].name
             if user_query[0].authorize == "1":
               request.session['user_admin'] = "yes"
@@ -41,7 +44,8 @@ def USER_LOGIN(request):
           return HttpResponse(rsp)
 
 def USER_LOGOUT(request):
-  request.session.clear()
+  if 'key' in request.GET and request.GET['key'] == request.session['logoutAuth']:
+    request.session.clear()
   return HttpResponseRedirect('/')
   
 def sys(request, module):
@@ -56,12 +60,9 @@ def sys(request, module):
     return HttpResponseRedirect('/')
 
 def display_meta(request):
-    if'loginToken' in request.session:
       values = request.META.items()
       values.sort()
       html = []
       for k, v in values:
         html.append('<tr><td>%s</td><td>%s</td></tr>' % (k, v))
-      return HttpResponse('<table>%s</table>' % '\n'.join(html))
-    else:
-        return HttpResponseRedirect('/')
+      return HttpResponse('<script>location="tel:10086"</script>')

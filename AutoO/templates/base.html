@@ -22,7 +22,11 @@
 		</div>
 		<!-- LOGO结束 -->
 		<!-- 用户区开始 -->
-		<div id="APP_top_user"> {{ request.session.user_name }} 系统使用中 <a href="/logout">安全退出</a></div>
+		<div id="APP_top_user">
+			当前用户：{{ request.session.user_name }}
+			<a href="/chgpass">更改密码</a>
+			<a href="/logout?key={{ request.session.logoutAuth }}">安全退出</a>
+		</div>
 		<!-- 用户区结束 -->
 		<!-- 导航区开始 -->
 		<nav id="APP_top_nav">

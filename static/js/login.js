@@ -26,8 +26,8 @@ $(document).ready(function() {
 		$('#USER_login_submit').attr('disabled', true);
 		$('#USER_login_status').html('用力登录中，请稍等…');
 		
-		// 加密
-		pswd = $.sha1($.sha1(pswd) + time);
+		// 加密(2014-08-19换至新验证方式后作废)
+		//pswd = $.sha1($.sha1(pswd) + time);
 		
 		$.ajax({
 			type: 'POST',

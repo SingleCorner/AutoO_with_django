@@ -38,13 +38,15 @@ function navbar_ajust() {
 function insProj(evt) {
   evt.preventDefault();
   
+	alias_name = $('#Proj_alias').val();
   name = $('#Proj_name').val();
   remark = $('#Proj_remark').val();
-
+	
 	$.ajax({
 		type: 'POST',
 		url: '/admin/project/add',
 		data: {
+			'alias_name': alias_name,
 			'name': name,
 			'remark': remark
 		},

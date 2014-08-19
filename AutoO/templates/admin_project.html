@@ -12,8 +12,9 @@
 			<div>
 				<div class="title_container"><h1>新项目</h1></div><br>
 				<form id="Proj_add">
-					项目名称<input type="text" size="8" id="Proj_name" />
-					项目备注<input type="text" size="12" id="Proj_remark" placeholder="建议为空">
+					项目编号<input type="text" size="5" id="Proj_alias" placeholder="000" />
+					项目名称<input type="text" size="10" id="Proj_name" placeholder="运维支持机" />
+					项目备注<input type="text" size="12" id="Proj_remark" placeholder="项目其他名称">
 					<input type="submit" value="添加项目" />
 					<span id="Proj_stat"></span>
 				</form>
@@ -22,14 +23,14 @@
 				<div class="title_container"><h1>运行ing项目</h1></div><br />
 				<table class="datatable">
 					<tr>
-						<th>项目ID</th>
+						<th>项目编号</th>
 						<th>项目名称</th>
 						<th>项目备注</th>
 						<th>操作</th>
 					</tr>
           {% for data in projects %}
             <tr>
-              <td>{{ data.id }}</td>
+              <td>{{ data.alias }}</td>
               <td>{{ data.name }}</td>
               <td>{{ data.remark }}</td>
               <td>

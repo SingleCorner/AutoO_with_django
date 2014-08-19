@@ -106,9 +106,10 @@ def admin(request, module="", action=""):
     if module == 'project':
       if action != '':
         if action == "add":
+          proj_alias = request.POST['alias_name']
           proj_name = request.POST['name']
           proj_remark = request.POST['remark']
-          obj = Project(name=proj_name, remark=proj_remark)
+          obj = Project(alias=proj_alias, name=proj_name, remark=proj_remark)
           obj.save()
           result = {}
           result['code'] = 1
@@ -127,7 +128,7 @@ def admin(request, module="", action=""):
           result['message'] = "操作失败"
         return HttpResponse(json.dumps(result), content_type="application/json")
       else:
-        projects = Project.objects.all()
+        projects = Project.objects.all().order_by('alias')
         rsp = render(request, 'admin_project.html', locals())
         return HttpResponse(rsp)
     elif module == 'servers':
@@ -308,7 +309,7 @@ def admin(request, module="", action=""):
           else:
             url_np = "?page=" + str((page + 1))
           url_lp = "?page=" + str(page_max)
-        projects = Project.objects.all()
+        projects = Project.objects.all().order_by('alias')
         rsp = render(request, 'admin_servers.html', locals())
         return HttpResponse(rsp)
     else:

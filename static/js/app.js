@@ -44,56 +44,6 @@ function frzAccount(id) {
 	});
 }
 
-
-//以下函数用于资产管理系统
-function qryAsset(evt) {
-	evt.preventDefault();
-	var pid = $('#proj_id').val();
-	var addr = $('#proj_ip').val();
-	var stat = $('#proj_stat').val();
-
-	$.ajax({
-		type: 'POST',
-		url: '?module=asset&action=trans',
-		data: {
-			'pid': pid,
-			'addr': addr,
-			'stat': stat
-		},
-		success: function(data, status, xhr) {
-			if (data.code == 1) {
-				window.location.href = data.message;
-			} else if (data.code == 0) {
-				alert(data.message);
-			}
-		},
-		dataType: 'json'
-	});
-}
-
-function delAsset(id) {
-	if (!confirm("操作提示：确认删除")) {
-		return false;
-	}
-	$.ajax({
-		type: 'POST',
-		url: 'admin.php?module=asset&action=del',
-		data: {
-			'id': id
-		},
-		success: function(data, status, xhr) {
-			if (data.code == 1) {
-				alert(data.message);
-				window.location.reload();
-			} else if (data.code == 0) {
-				alert(data.message);
-			}
-		},
-		dataType: 'json'
-	});
-}
-
-
 function load_newAsset() {
 	if ($('#asset_add').is(':hidden')) {
 		$('#asset_add').show();

@@ -15,6 +15,7 @@ from django.db import models
       
 class Project(models.Model):
     id = models.IntegerField(primary_key=True)
+    alias = models.CharField(unique=True, max_length=14, blank=True)
     name = models.CharField(max_length=14, blank=True)
     remark = models.CharField(max_length=14, blank=True)
     class Meta:
