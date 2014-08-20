@@ -2,6 +2,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 import hashlib
 import datetime, time
@@ -29,11 +30,19 @@ def asset(request):
       if 'ip' in request.POST:
         if request.POST['ip'] == "":
           try:
-            request.session['query_data'].pop('ip')
+            request.session['query_data'].pop('ip__contains')
           except:
             a = 1
         else:
           request.session['query_data']['ip__contains'] = request.POST['ip']
+      if 'ip_2' in request.POST:
+        if request.POST['ip_2'] == "":
+          try:
+            request.session['query_data'].pop('ip_2__contains')
+          except:
+            a = 1
+        else:
+          request.session['query_data']['ip_2__contains'] = request.POST['ip_2']
       if 'srv' in request.POST:
         if request.POST['srv'] == "":
           try:
@@ -57,6 +66,8 @@ def asset(request):
         request.session['query_data']['pid'] = request.POST['pid']
       if 'ip' in request.POST and request.POST['ip'] != "":
         request.session['query_data']['ip__contains'] = request.POST['ip']
+      if 'ip_2' in request.POST and request.POST['ip_2'] != "":
+        request.session['query_data']['ip_2__contains'] = request.POST['ip_2']
       if 'srv' in request.POST and request.POST['srv'] != "":
         request.session['query_data']['srv'] = request.POST['srv']
       if 'status' in request.POST and request.POST['status'] != "":
@@ -136,6 +147,7 @@ def admin(request, module="", action=""):
         if action == "add":
           asset_pid = request.POST['pid']
           asset_ip = request.POST['ip']
+          asset_ip_2 = request.POST['ip_2']
           asset_cpu = request.POST['cpu']
           asset_mem = request.POST['mem']
           asset_disk = request.POST['disk']
@@ -150,6 +162,7 @@ def admin(request, module="", action=""):
           pid = Project.objects.get(id=asset_pid)
           obj = Server(pid=pid,
                        ip=asset_ip,
+                       ip_2=asset_ip_2,
                        cpu=asset_cpu,
                        mem=asset_mem,
                        disk=asset_disk,
@@ -176,6 +189,7 @@ def admin(request, module="", action=""):
           if 'update' in request.GET:
             asset_pid = request.POST['pid']
             asset_ip = request.POST['ip']
+            asset_ip_2 = request.POST['ip_2']
             asset_cpu = request.POST['cpu']
             asset_mem = request.POST['mem']
             asset_disk = request.POST['disk']
@@ -192,6 +206,7 @@ def admin(request, module="", action=""):
             asset_nagios = request.POST['nagios']
             try:
               Server.objects.filter(id=action).update(ip=asset_ip,
+                ip_2=asset_ip_2,
                 cpu=asset_cpu,
                 mem=asset_mem,
                 disk=asset_disk,
@@ -241,11 +256,19 @@ def admin(request, module="", action=""):
             if 'ip' in request.POST:
               if request.POST['ip'] == "":
                 try:
-                  request.session['query_data'].pop('ip')
+                  request.session['query_data'].pop('ip__contains')
                 except:
                   a = 1
               else:
                 request.session['query_data']['ip__contains'] = request.POST['ip']
+            if 'ip_2' in request.POST:
+              if request.POST['ip_2'] == "":
+                try:
+                  request.session['query_data'].pop('ip_2__contains')
+                except:
+                  a = 1
+              else:
+                request.session['query_data']['ip_2__contains'] = request.POST['ip_2']
             if 'srv' in request.POST:
               if request.POST['srv'] == "":
                 try:
@@ -269,6 +292,8 @@ def admin(request, module="", action=""):
               request.session['query_data']['pid'] = request.POST['pid']
             if 'ip' in request.POST and request.POST['ip'] != "":
               request.session['query_data']['ip__contains'] = request.POST['ip']
+            if 'ip_2' in request.POST and request.POST['ip_2'] != "":
+              request.session['query_data']['ip_2__contains'] = request.POST['ip_2']
             if 'srv' in request.POST and request.POST['srv'] != "":
               request.session['query_data']['srv'] = request.POST['srv']
             if 'status' in request.POST and request.POST['status'] != "":

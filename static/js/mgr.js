@@ -109,6 +109,7 @@ function insAsset(evt) {
 	
 	pid = $('#Asset_proj').val();
 	ip = $('#Asset_ip').val();
+	ip_2 = $('#Asset_ip_2').val();
 	cpu = $('#Asset_cpu').val();
 	mem = $('#Asset_mem').val();
 	disk = $('#Asset_disk').val();
@@ -122,6 +123,7 @@ function insAsset(evt) {
 		data: {
 			'pid': pid,
 			'ip': ip,
+			'ip_2': ip_2,
 			'cpu': cpu,
 			'mem': mem,
 			'disk': disk,
@@ -156,6 +158,7 @@ function uptAsset(evt) {
 	id = $('#Asset_id').val();;
 	pid = $('#Asset_proj').val();
 	ip = $('#Asset_ip').val();
+	ip_2 = $('#Asset_ip_2').val();
 	cpu = $('#Asset_cpu').val();
 	mem = $('#Asset_mem').val();
 	disk = $('#Asset_disk').val();
@@ -174,6 +177,7 @@ function uptAsset(evt) {
 		data: {
 			'pid': pid,
 			'ip': ip,
+			'ip_2': ip_2,
 			'cpu': cpu,
 			'mem': mem,
 			'disk': disk,

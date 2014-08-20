@@ -8,7 +8,8 @@
 					<select id="Asset_proj" name="Asset_proj">
 						<option value="{{ queryset.pid.id }}">{{ queryset.pid.name }}</option>
 					</select>暂时不支持项目变更操作<br>
-					IP地址<input type="text" size="15" id="Asset_ip" value="{{ queryset.ip }}"><br>
+					第一IP地址<input type="text" size="15" id="Asset_ip" value="{{ queryset.ip }}"><br>
+					第二IP地址<input type="text" size="15" id="Asset_ip_2" value="{{ queryset.ip_2 }}"><br>
 					CPU核数<input type="text" size="8" id="Asset_cpu" value="{{ queryset.cpu }}"><br>
 					内存（G）<input type="text" size="8" id="Asset_mem" value="{{ queryset.mem }}"><br>
 					硬盘（G）<input type="text" size="8" id="Asset_disk" value="{{ queryset.disk }}"><br>

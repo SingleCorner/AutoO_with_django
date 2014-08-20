@@ -15,7 +15,8 @@
 								<option value="APP">APP</option>
 								<option value="DB">DB</option>
 							</select>
-							<input type="text" name="ip" placeholder="IP地址" />
+							<input type="text" name="ip" placeholder="第一IP地址" />
+							<input type="text" name="ip_2" placeholder="第二IP地址" />
 							<select name="status">
 								<option value="">所有</option>
 								<option value="0">待释放</option>
@@ -36,6 +37,7 @@
 						{% endfor %}
 					</select>
 					<input type="text" size="15" id="Asset_ip" placeholder="172.21.1.1">
+					<input type="text" size="15" id="Asset_ip_2" placeholder="192.168.1.1">
 					<input type="text" size="8" id="Asset_cpu" placeholder="CPU（核）">
 					<input type="text" size="8" id="Asset_mem" placeholder="MEM（G）">
 					<input type="text" size="8" id="Asset_disk" placeholder="DISK（G）">
@@ -71,7 +73,12 @@
           {% for data in data_list %}
             <tr>
               <td>{{ data.pid.name }}</td>
-              <td>{{ data.ip }}</td>
+              <td>
+								{{ data.ip }}
+								{% if data.ip_2 %}
+									<br>{{ data.ip_2 }}
+								{% endif %}
+							</td>
               <td title="{{ data.desc }}">{{ data.desc }}</td>
               <td>{{ data.type }}</td>
 							<td>{{ data.srv }}</td>
