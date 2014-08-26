@@ -5,6 +5,7 @@
 					<span class="title_more">
 						<form id="query_form" action="?query" method=post>
 							<select name="pid">
+								{{ record_time }}
 								<option value="">所属项目</option>
 								{% for proj in projects %}
 								<option value="{{ proj.id }}">{{ proj.name }}</option>

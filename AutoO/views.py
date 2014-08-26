@@ -2,7 +2,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.core.paginator import Paginator
-from django.db.models import Q
 
 import hashlib
 import datetime, time
@@ -10,6 +9,11 @@ import json
 import copy
 
 from apps.models import Project, Server
+
+def logRecord():
+  record_name = request.session['name']
+  record_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
+  return record_time
 
 def asset(request):
   if 'page' in request.GET and request.GET['page'].isdigit():
@@ -24,7 +28,7 @@ def asset(request):
           try:
             request.session['query_data'].pop('pid')
           except:
-            a = 1
+            quit
         else:
           request.session['query_data']['pid'] = request.POST['pid']
       if 'ip' in request.POST:
@@ -109,10 +113,17 @@ def asset(request):
       url_np = "?page=" + str((page + 1))
     url_lp = "?page=" + str(page_max)
   projects = Project.objects.all()
+  #timer = time.strftime('%Y-%m-%d %X %H:%M',time.localtime())
+  timer = time.localtime()
   rsp = render(request, 'user_assets.html', locals())
   return HttpResponse(rsp)
 
 def admin(request, module="", action=""):
+  def logRecord():
+    record_name = request.session['user_name']
+    record_action = "添加"
+    return record_name
+  
   if 'loginToken' in request.session and request.session['user_admin'] == "yes":
     if module == 'project':
       if action != '':
@@ -139,6 +150,7 @@ def admin(request, module="", action=""):
           result['message'] = "操作失败"
         return HttpResponse(json.dumps(result), content_type="application/json")
       else:
+        temp = logRecord()
         projects = Project.objects.all().order_by('alias')
         rsp = render(request, 'admin_project.html', locals())
         return HttpResponse(rsp)
