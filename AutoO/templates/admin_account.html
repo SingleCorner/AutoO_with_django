@@ -37,6 +37,7 @@
 						<th>状态</th>
 						<th>后台</th>
 						<th>项目</th>
+            <th>日期</th>
 						<th>操作</th>
 					</tr>
           {% for accnt in account_list %}
@@ -50,6 +51,7 @@
               <td>拒绝</td>
             {% endifequal %}
               <td>{{ accnt.module }}</td>
+              <td>{{ accnt.regist_time }}</td>
               <td><button class="red" onclick="frzAccount({{ accnt.id }})">账号冻结/解冻</button></td>
             </tr>
           {% endfor %}

@@ -57,13 +57,38 @@ def USER_LOGOUT(request):
     request.session.clear()
   return HttpResponseRedirect('/')
   
-def sys(request, module):
+def sys(request, module, action=""):
   if 'loginToken' in request.session and request.session['user_sys']:
     if module == 'account':
-      project_list = Project.objects.all()
-      account_list = Account.objects.all()
-      rsp = render(request, 'admin_account.html', locals())
-      return HttpResponse(rsp)
+      if action == "add":
+        account = request.POST['account']
+        name = request.POST['name']
+        passwd = make_password(request.POST['passwd'], None, 'pbkdf2_sha256')
+        mgr = request.POST['mgr']
+        project = request.POST['project']
+        date = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
+        try:
+          obj = Account(account=account,
+                        name=name,
+                        secpasswd=passwd,
+                        status=1,
+                        regist_time=date,
+                        authorize=mgr,
+                        module=project)
+          obj.save()
+          result = {}
+          result['code'] = 1
+          result['message'] = date
+        except:
+          result = {}
+          result['code'] = 0
+          result['message'] = "添加失败"
+        return HttpResponse(json.dumps(result), content_type="application/json")
+      else:
+        project_list = Project.objects.all()
+        account_list = Account.objects.all()
+        rsp = render(request, 'admin_account.html', locals())
+        return HttpResponse(rsp)
     elif module == 'log':
       log_list = Logrecord.objects.all();
       rsp = render(request, 'admin_log.html', locals())

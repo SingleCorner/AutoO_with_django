@@ -22,7 +22,7 @@ class Account(models.Model):
     tel = models.CharField(max_length=11, blank=True)
     mail = models.CharField(max_length=40, blank=True)
     status = models.IntegerField(blank=True, null=True)
-    regist_time = models.DateTimeField(blank=True, null=True)
+    regist_time = models.CharField(max_length=20, blank=True)
     authorize = models.CharField(max_length=40, blank=True)
     module = models.CharField(max_length=50, blank=True)
     class Meta:

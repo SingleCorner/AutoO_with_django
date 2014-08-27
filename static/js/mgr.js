@@ -11,6 +11,7 @@ $(document).ready(function() {
   $('#Proj_add').submit(insProj);
 	$('#Asset_add').submit(insAsset);
 	$('#Asset_upt').submit(uptAsset);
+	$('#Accnt_add').submit(insAccnt);
 });
 
 /*
@@ -234,4 +235,44 @@ function delAsset(id) {
     },
 		dataType: 'json'
 	});
+}
+/*
+ * 帐号控制模块
+ * Author: sinerwr
+ * 帐号控制：添加
+ * 
+*/
+function insAccnt(evt) {
+  evt.preventDefault();
+	
+	account = $('#Accnt_id').val();
+	name = $('#Accnt_name').val();
+	passwd = $('#Accnt_pass').val();
+	mgr = $('input[name="Accnt_mgr"]:checked').val();
+	project = $('#Accnt_proj').val();
+	
+	$.ajax({
+		type: 'POST',
+		url: '/sys/account/add',
+		data: {
+			'account': account,
+			'name': name,
+			'passwd': passwd,
+			'mgr': mgr,
+			'project': project,
+		},
+    timeout: 5000,
+		success: function(data, status, xhr) {
+			if (data.code == 1) {
+				alert(data.message);
+				window.location.reload();
+			} else if (data.code == 0) {
+				alert(data.message);
+			}
+		},
+    error: function(data) {
+      alert('操作超时');
+    },
+		dataType: 'json'
+	})
 }
