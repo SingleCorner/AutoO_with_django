@@ -17,6 +17,7 @@ urlpatterns += patterns('common.views',
     
     url(r'^$', 'USER_LOGIN'),
     url(r'^logout/$', 'USER_LOGOUT'),
+    url(r'^chgpass/$', 'USER_CHGPASS'),
     
     url(r'^sys/(?P<module>.*)/(?P<action>.*)$', 'sys'),
     url(r'^test/$', 'display_meta'),

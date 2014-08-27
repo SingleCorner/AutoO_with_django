@@ -1,0 +1,10 @@
+{% extends "user_base.html"%}
+
+{% block app %}
+  <p>{{ passinfo }}</p>
+  <form action="" method="post">
+    密码<input type="password" name="passwd">
+    确认<input type="password" name="passwd_cfm">
+    <input type="submit" value="确认修改">
+  </form>
+{% endblock %}

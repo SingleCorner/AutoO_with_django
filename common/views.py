@@ -28,6 +28,7 @@ def USER_LOGIN(request):
             result['code'] = 0
             request.session['loginToken'] = "True"
             request.session['logoutAuth'] = string.join(random.sample(['z','y','x','w','v','u','t','s','r','q','p','o','n','m','l','k','j','i','h','g','f','e','d','c','b','a'], 4)).replace(' ','').upper()
+            request.session['user_id'] = user_query[0].id
             request.session['user_name'] = user_query[0].name
             #判断后台进入权限
             if user_query[0].authorize == "1":
@@ -56,6 +57,28 @@ def USER_LOGOUT(request):
   if 'key' in request.GET and request.GET['key'] == request.session['logoutAuth']:
     request.session.clear()
   return HttpResponseRedirect('/')
+
+def USER_CHGPASS(request):
+  user_id = request.session['user_id']
+  if 'passwd' in request.POST:
+    passwd = request.POST['passwd']
+  else:
+    passwd = ''
+    
+  if 'passwd_cfm' in request.POST:
+    passwd_c = request.POST['passwd_cfm']
+  else:
+    passwd_c = 'wrong'
+    
+  if passwd == passwd_c:
+    passwd_sec = make_password(passwd, None, 'pbkdf2_sha256')
+    try:
+      Account.objects.filter(id=user_id).update(secpasswd=passwd_sec)
+      passinfo = "密码修改成功"
+    except:
+      passinfo = "密码修改失败"    
+  rsp = render(request, 'user_chgpass.html', locals())
+  return HttpResponse(rsp)
   
 def sys(request, module, action=""):
   if 'loginToken' in request.session and request.session['user_sys']:
