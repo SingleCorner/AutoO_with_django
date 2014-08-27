@@ -28,3 +28,14 @@ class Account(models.Model):
     class Meta:
         managed = False
         db_table = 'Account'
+        
+class Logrecord(models.Model):
+    id = models.IntegerField(primary_key=True)
+    user = models.CharField(max_length=15)
+    time = models.CharField(max_length=20)
+    action = models.CharField(max_length=10, blank=True)
+    table = models.CharField(max_length=15, blank=True)
+    data = models.CharField(max_length=500,blank=True)
+    class Meta:
+        managed = False
+        db_table = 'logrecord'

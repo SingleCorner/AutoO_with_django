@@ -6,14 +6,11 @@ from django.core.paginator import Paginator
 import hashlib
 import datetime, time
 import json
-import copy
+import copy, pprint
 
-from apps.models import Project, Server
-
-def logRecord():
-  record_name = request.session['name']
-  record_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
-  return record_time
+#from apps.models import Project, Server
+from apps.models import *
+from common.models import *
 
 def asset(request):
   if 'page' in request.GET and request.GET['page'].isdigit():
@@ -113,18 +110,20 @@ def asset(request):
       url_np = "?page=" + str((page + 1))
     url_lp = "?page=" + str(page_max)
   projects = Project.objects.all()
-  #timer = time.strftime('%Y-%m-%d %X %H:%M',time.localtime())
-  timer = time.localtime()
   rsp = render(request, 'user_assets.html', locals())
   return HttpResponse(rsp)
 
 def admin(request, module="", action=""):
-  def logRecord():
+  def logRecord(r_action='', r_table='', r_data=''):
     record_name = request.session['user_name']
-    record_action = "添加"
-    return record_name
+    record_time = time.strftime('%Y-%m-%d %H:%M',time.localtime())
+    data_str = ''
+    for temp in sorted(r_data):
+      data_str += str(temp)+'='+r_data[temp]+' '
+    log_op = Logrecord(user=record_name, time=record_time, action=r_action, table=r_table, data=data_str)
+    log_op.save()
   
-  if 'loginToken' in request.session and request.session['user_admin'] == "yes":
+  if 'loginToken' in request.session and request.session['user_admin']:
     if module == 'project':
       if action != '':
         if action == "add":
@@ -133,12 +132,14 @@ def admin(request, module="", action=""):
           proj_remark = request.POST['remark']
           obj = Project(alias=proj_alias, name=proj_name, remark=proj_remark)
           obj.save()
+          logRecord(action, 'project', request.POST)
           result = {}
           result['code'] = 1
           result['message'] = "添加成功"
         elif action == "del":
           pid = request.POST['id']
           Project.objects.get(id=pid).delete()
+          logRecord(action, 'project', request.POST)
           result = {}
           result['code'] = 1
           result['message'] = "删除成功"
@@ -150,7 +151,6 @@ def admin(request, module="", action=""):
           result['message'] = "操作失败"
         return HttpResponse(json.dumps(result), content_type="application/json")
       else:
-        temp = logRecord()
         projects = Project.objects.all().order_by('alias')
         rsp = render(request, 'admin_project.html', locals())
         return HttpResponse(rsp)
@@ -183,6 +183,7 @@ def admin(request, module="", action=""):
                        desc=asset_desc,
                        status='1')
           obj.save()
+          logRecord(action, 'asset', request.POST)
           result = {}
           result['code'] = 1
           result['message'] = "添加成功"
@@ -190,6 +191,7 @@ def admin(request, module="", action=""):
           id = request.POST['id']
           try:
             Server.objects.get(id=id).delete()
+            logRecord(action, 'asset', request.POST)
             result = {}
             result['code'] = 1
             result['message'] = "删除成功"
@@ -229,6 +231,7 @@ def admin(request, module="", action=""):
                 cacti = asset_cacti,
                 nagios = asset_nagios
               )
+              logRecord('update', 'asset', request.POST)
               result = {}
               result['code'] = 1
               result['message'] = "资产修改成功"

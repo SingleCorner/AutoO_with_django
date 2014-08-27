@@ -16,8 +16,14 @@
 					姓名<input type="text" size="5" id="Accnt_name" />
 					密码<input type="password" size="20" id="Accnt_pass" />
 					管理员<input type="radio" name="Accnt_mgr" value=1>是
-						  <input type="radio" name="Accnt_mgr" value=0>否
-					项目权限<input type="text" size="4" id="Accnt_proj">
+          <input type="radio" name="Accnt_mgr" value=0>否
+					项目授权
+          <select id="Accnt_proj">
+            <option value="-1">所有项目</option>
+            {% for proj in project_list %}
+            <option value="{{ proj.id }}">{{ proj.name }}</option>
+            {% endfor %}
+          </select>
 					<input type="submit" value="生成账号" />
 					<span id="Account_stat"></span>
 				</form>

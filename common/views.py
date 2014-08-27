@@ -7,7 +7,8 @@ import hashlib, random, string
 import datetime, time
 import json
 
-from common.models import Account
+from common.models import Account, Logrecord
+from AutoO.apps.models import Project
 
 def USER_LOGIN(request):
     if 'loginToken' in request.session:
@@ -28,8 +29,16 @@ def USER_LOGIN(request):
             request.session['loginToken'] = "True"
             request.session['logoutAuth'] = string.join(random.sample(['z','y','x','w','v','u','t','s','r','q','p','o','n','m','l','k','j','i','h','g','f','e','d','c','b','a'], 4)).replace(' ','').upper()
             request.session['user_name'] = user_query[0].name
+            #判断后台进入权限
             if user_query[0].authorize == "1":
-              request.session['user_admin'] = "yes"
+              request.session['user_admin'] = True
+            else:
+              request.session['user_admin'] = False
+            #判断项目权限
+            if user_query[0].module == "-1":
+              request.session['user_sys'] = True
+            else:
+              request.session['user_sys'] = False
           else:
             result = {}
             result['code'] = -1
@@ -49,10 +58,15 @@ def USER_LOGOUT(request):
   return HttpResponseRedirect('/')
   
 def sys(request, module):
-  if 'loginToken' in request.session and request.session['user_admin'] == "yes":
+  if 'loginToken' in request.session and request.session['user_sys']:
     if module == 'account':
-      account_list = Account.objects.all();
+      project_list = Project.objects.all()
+      account_list = Account.objects.all()
       rsp = render(request, 'admin_account.html', locals())
+      return HttpResponse(rsp)
+    elif module == 'log':
+      log_list = Logrecord.objects.all();
+      rsp = render(request, 'admin_log.html', locals())
       return HttpResponse(rsp)
     else:
       return HttpResponseRedirect('account')
@@ -60,9 +74,8 @@ def sys(request, module):
     return HttpResponseRedirect('/')
 
 def display_meta(request):
-      values = request.META.items()
-      values.sort()
-      html = []
-      for k, v in values:
-        html.append('<tr><td>%s</td><td>%s</td></tr>' % (k, v))
-      return HttpResponse('<script>location="tel:10086"</script>')
+  #request.POST = {'a':'90','b':'100'}   
+  res = ''
+  for temp in sorted(request.POST):
+    res += str(temp)+'='+request.POST[temp]+' '
+  return HttpResponse(res+"<form action=./ method=post><input name='name'><input name='test'><input type=submit></form>")

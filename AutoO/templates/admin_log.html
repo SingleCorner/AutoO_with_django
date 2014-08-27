@@ -1,0 +1,20 @@
+{% extends "admin_base.html" %}
+
+{% block app %}
+			<div id="APP_listStaff">
+				<div class="title_container"><h1>行迹尽在掌握</h1></div><br />
+				<table class="datatable">
+					<tr>
+						<th width=5%>用户</th>
+						<th>数据变更日志</th>
+					</tr>
+          {% for log in log_list %}
+            <tr>
+              <td>{{ log.user }}</td>
+              <td>
+								于 {{ log.time }} 对 {{ log.table }} 表 {{ log.action }} 数据：<br>{{ log.data }}
+							</td>
+            </tr>
+          {% endfor %}
+      </div>
+{% endblock %}
