@@ -284,12 +284,10 @@ function insAccnt(evt) {
  * 		控制帐号登录，1为可登录，0为不可登录
  * 
 */
-function accnt_status(id) {	
+function accnt_op(id,ctrl) {	
 	if (!confirm("操作提示：冻结/解冻帐号将影响此用户登录")) {
 		return false;
 	}
-	
-	ctrl = "status";
 	
 	$.ajax({
 		type: 'POST',

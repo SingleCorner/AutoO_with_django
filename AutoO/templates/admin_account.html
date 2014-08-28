@@ -32,19 +32,23 @@
 				<div class="title_container"><h1>小伙伴</h1></div><br />
 				<table class="datatable">
 					<tr>
-						<th>工号</th>
+						<th width=10%>工号</th>
 						<th>姓名</th>
 						<th>状态</th>
 						<th>后台</th>
 						<th>项目</th>
-            <th>日期</th>
-						<th>操作</th>
+            <th>创建</th>
+						<th width=20%>操作</th>
 					</tr>
           {% for accnt in account_list %}
             <tr>
               <td>{{ accnt.account }}</td>
               <td>{{ accnt.name }}</td>
-              <td>{{ accnt.status }}</td>
+            {% ifequal accnt.status 1 %}
+              <td>可登录</td>
+            {% else %}
+              <td>已禁用</td>
+            {% endifequal %}
             {% ifequal accnt.authorize '1' %}
               <td>允许</td>
             {% else %}
@@ -52,7 +56,10 @@
             {% endifequal %}
               <td>{{ accnt.module }}</td>
               <td>{{ accnt.regist_time }}</td>
-              <td><button class="red" onclick="accnt_status({{ accnt.id }})">冻结/解冻</button></td>
+              <td>
+                <button class="btn" onclick="accnt_op({{ accnt.id }},'admin')">后台授权</button>
+                <button class="red" onclick="accnt_op({{ accnt.id }},'status')">冻结/解冻</button>
+              </td>
             </tr>
           {% endfor %}
       </div>

@@ -111,17 +111,26 @@ def sys(request, module, action=""):
       else:
         if 'ctrl' in request.POST:
           ctrl = request.POST['ctrl']
+          accnt_id = request.POST['id']
+          accnt = Account.objects.get(id=accnt_id)
           if ctrl == "status":
-            accnt_id = request.POST['id']
-            accnt = Account.objects.get(id=accnt_id)
             accnt_status = accnt.status
             if accnt_status == 1:
-              Account.objects.get(id=accnt_id).update(status=0)
+              Account.objects.filter(id=accnt_id).update(status=0)
             else:
-              Account.objects.get(id=accnt_id).update(status=1)
+              Account.objects.filter(id=accnt_id).update(status=1)
             result = {}
             result['code'] = 1
             result['message'] = "状态变更成功"
+          elif ctrl == "admin":
+            accnt_admin = accnt.authorize
+            if accnt_admin == '1':
+              Account.objects.filter(id=accnt_id).update(authorize='0')
+            else:
+              Account.objects.filter(id=accnt_id).update(authorize='1')
+            result = {}
+            result['code'] = 1
+            result['message'] = "后台权限变成成功"
           else:
             result = {}
             result['code'] = 0
