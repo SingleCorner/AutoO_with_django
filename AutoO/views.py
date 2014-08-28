@@ -126,7 +126,7 @@ def admin(request, module="", action=""):
   if 'loginToken' in request.session and request.session['user_admin']:
     if module == 'project':
       if action != '':
-        if action == "add":
+        if action == "add" and request.session['user_sys']:
           proj_alias = request.POST['alias_name']
           proj_name = request.POST['name']
           proj_remark = request.POST['remark']
@@ -138,11 +138,16 @@ def admin(request, module="", action=""):
           result['message'] = "添加成功"
         elif action == "del":
           pid = request.POST['id']
-          Project.objects.get(id=pid).delete()
-          logRecord(action, 'project', request.POST)
-          result = {}
-          result['code'] = 1
-          result['message'] = "删除成功"
+          if request.session['user_sys'] or pid == request.session['user_proj']:
+            Project.objects.get(id=pid).delete()
+            logRecord(action, 'project', request.POST)
+            result = {}
+            result['code'] = 1
+            result['message'] = "删除成功"
+          else:
+            result = {}
+            result['code'] = 1
+            result['message'] = "无权限删除"
         elif action.isdigit():
           return HttpResponse(action)
         else:         
@@ -172,33 +177,45 @@ def admin(request, module="", action=""):
           asset_srv = request.POST['srv']
           asset_desc = request.POST['desc']
           pid = Project.objects.get(id=asset_pid)
-          obj = Server(pid=pid,
-                       ip=asset_ip,
-                       ip_2=asset_ip_2,
-                       cpu=asset_cpu,
-                       mem=asset_mem,
-                       disk=asset_disk,
-                       type=asset_type,
-                       srv=asset_srv,
-                       desc=asset_desc,
-                       status='1')
-          obj.save()
-          logRecord(action, 'asset', request.POST)
-          result = {}
-          result['code'] = 1
-          result['message'] = "添加成功"
-        elif action == "del":
-          id = request.POST['id']
-          try:
-            Server.objects.get(id=id).delete()
+          if request.session['user_sys'] or asset_pid == request.session['user_proj']:
+            obj = Server(pid=pid,
+                         ip=asset_ip,
+                         ip_2=asset_ip_2,
+                         cpu=asset_cpu,
+                         mem=asset_mem,
+                         disk=asset_disk,
+                         type=asset_type,
+                         srv=asset_srv,
+                         desc=asset_desc,
+                         status='1')
+            obj.save()
             logRecord(action, 'asset', request.POST)
             result = {}
             result['code'] = 1
-            result['message'] = "删除成功"
-          except:
+            result['message'] = "添加成功"
+          else:
             result = {}
             result['code'] = 0
-            result['message'] = "删除异常"
+            result['message'] = "未授权的操作"
+        elif action == "del":
+          id = request.POST['id']
+          del_data = Server.objects.filter(id=id)
+          del_id = str(del_data[0].pid.id)
+          if request.session['user_sys'] or del_id == request.session['user_proj']:
+            try:
+              Server.objects.get(id=id).delete()
+              logRecord(action, 'asset', request.POST)
+              result = {}
+              result['code'] = 1
+              result['message'] = "删除成功"
+            except:
+              result = {}
+              result['code'] = 0
+              result['message'] = "删除异常"
+          else:
+              result = {}
+              result['code'] = 0
+              result['message'] = "未授权的操作"
         elif action.isdigit():
           if 'update' in request.GET:
             asset_pid = request.POST['pid']
@@ -218,27 +235,32 @@ def admin(request, module="", action=""):
             asset_status = request.POST['status']
             asset_cacti = request.POST['cacti']
             asset_nagios = request.POST['nagios']
-            try:
-              Server.objects.filter(id=action).update(ip=asset_ip,
-                ip_2=asset_ip_2,
-                cpu=asset_cpu,
-                mem=asset_mem,
-                disk=asset_disk,
-                type=asset_type,
-                srv=asset_srv,
-                desc=asset_desc,
-                status = asset_status,
-                cacti = asset_cacti,
-                nagios = asset_nagios
-              )
-              logRecord('update', 'asset', request.POST)
-              result = {}
-              result['code'] = 1
-              result['message'] = "资产修改成功"
-            except:
-              result = {}
-              result['code'] = 0
-              result['message'] = "资产修改未提交"
+            if request.session['user_sys'] or asset_pid == request.session['user_proj']:
+              try:
+                Server.objects.filter(id=action).update(ip=asset_ip,
+                  ip_2=asset_ip_2,
+                  cpu=asset_cpu,
+                  mem=asset_mem,
+                  disk=asset_disk,
+                  type=asset_type,
+                  srv=asset_srv,
+                  desc=asset_desc,
+                  status = asset_status,
+                  cacti = asset_cacti,
+                  nagios = asset_nagios
+                )
+                logRecord('update', 'asset', request.POST)
+                result = {}
+                result['code'] = 1
+                result['message'] = "资产修改成功"
+              except:
+                result = {}
+                result['code'] = 0
+                result['message'] = "资产修改未提交"
+            else:
+                result = {}
+                result['code'] = 0
+                result['message'] = "未授权的操作"
             return HttpResponse(json.dumps(result), content_type="application/json")
           else:
             try:
@@ -319,7 +341,10 @@ def admin(request, module="", action=""):
         else:
           request.session['query'] = {}
           request.session['query_data'] = {}
-          servers = Server.objects.select_related().all()
+          if request.session['user_sys']:
+            servers = Server.objects.select_related().all()
+          else:
+            servers = Server.objects.select_related().filter(pid=request.session['user_proj'])
         pagin = Paginator(servers,20)
         page_max = pagin.num_pages
         if page_get > page_max:
@@ -349,7 +374,10 @@ def admin(request, module="", action=""):
           else:
             url_np = "?page=" + str((page + 1))
           url_lp = "?page=" + str(page_max)
-        projects = Project.objects.all().order_by('alias')
+        if request.session['user_sys']:
+          projects = Project.objects.all().order_by('alias')
+        else:
+          projects = Project.objects.filter(id=request.session['user_proj']).order_by('alias')
         rsp = render(request, 'admin_servers.html', locals())
         return HttpResponse(rsp)
     else:

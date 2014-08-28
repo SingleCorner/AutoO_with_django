@@ -52,7 +52,7 @@
             {% endifequal %}
               <td>{{ accnt.module }}</td>
               <td>{{ accnt.regist_time }}</td>
-              <td><button class="red" onclick="frzAccount({{ accnt.id }})">账号冻结/解冻</button></td>
+              <td><button class="red" onclick="accnt_status({{ accnt.id }})">冻结/解冻</button></td>
             </tr>
           {% endfor %}
       </div>

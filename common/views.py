@@ -40,6 +40,7 @@ def USER_LOGIN(request):
               request.session['user_sys'] = True
             else:
               request.session['user_sys'] = False
+              request.session['user_proj'] = user_query[0].module
           else:
             result = {}
             result['code'] = -1
@@ -108,10 +109,29 @@ def sys(request, module, action=""):
           result['message'] = "添加失败"
         return HttpResponse(json.dumps(result), content_type="application/json")
       else:
-        project_list = Project.objects.all()
-        account_list = Account.objects.all()
-        rsp = render(request, 'admin_account.html', locals())
-        return HttpResponse(rsp)
+        if 'ctrl' in request.POST:
+          ctrl = request.POST['ctrl']
+          if ctrl == "status":
+            accnt_id = request.POST['id']
+            accnt = Account.objects.get(id=accnt_id)
+            accnt_status = accnt.status
+            if accnt_status == 1:
+              Account.objects.get(id=accnt_id).update(status=0)
+            else:
+              Account.objects.get(id=accnt_id).update(status=1)
+            result = {}
+            result['code'] = 1
+            result['message'] = "状态变更成功"
+          else:
+            result = {}
+            result['code'] = 0
+            result['message'] = "无操作"
+          return HttpResponse(json.dumps(result), content_type="application/json")
+        else:
+          project_list = Project.objects.all()
+          account_list = Account.objects.all()
+          rsp = render(request, 'admin_account.html', locals())
+          return HttpResponse(rsp)
     elif module == 'log':
       log_list = Logrecord.objects.all();
       rsp = render(request, 'admin_log.html', locals())

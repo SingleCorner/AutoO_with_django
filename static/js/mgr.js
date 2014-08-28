@@ -276,3 +276,36 @@ function insAccnt(evt) {
 		dataType: 'json'
 	})
 }
+
+/*
+ * 帐号控制模块
+ * Author: sinerwr
+ * 帐号控制：状态变更
+ * 		控制帐号登录，1为可登录，0为不可登录
+ * 
+*/
+function accnt_status(id) {	
+	if (!confirm("操作提示：冻结/解冻帐号将影响此用户登录")) {
+		return false;
+	}
+	
+	ctrl = "status";
+	
+	$.ajax({
+		type: 'POST',
+		url: './',
+		data: {
+			'id': id,
+			'ctrl': ctrl,
+		},
+		success: function(data, status, xhr) {
+			if (data.code == 1) {
+				alert(data.message);
+				window.location.reload();
+			} else if (data.code == 0) {
+				alert(data.message);
+			}
+		},
+		dataType: 'json'
+	});
+}
