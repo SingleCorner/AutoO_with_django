@@ -90,12 +90,11 @@ DATABASES = {
         'PASSWORD': 'AMITKEOSFNRP',
     },
     'master': {
-        'ENGINE': 'django.db.backends.oracle',
+        'ENGINE': 'django.db.backends.mysql',
         'HOST': '10.42.50.152',
-        'PORT': '1521',
-        'NAME': 'orcl',
-        'USER': 'scott',
-        'PASSWORD': 'tiger',
+        'NAME': 'AutoO',
+        'USER': 'slave',
+        'PASSWORD': 'unuse',
     }
 }
 
