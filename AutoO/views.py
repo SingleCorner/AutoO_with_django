@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 import hashlib
 import datetime, time
 import json
-import copy, pprint
+import copy, pprint, netsnmp
 
 #from apps.models import Project, Server
 from apps.models import *
@@ -385,3 +385,52 @@ def admin(request, module="", action=""):
       return HttpResponse(rsp)
   else:
     return HttpResponseRedirect('/')
+
+def module_test(request):
+  if 'submit' in request.POST:
+    ipaddr = request.POST['ipaddr']
+    snmpsession = netsnmp.Session(Version = 2, DestHost = ipaddr, Timeout=50000, ErrorStr='Cannot connect')
+    oid_name = netsnmp.Varbind('.1.3.6.1.2.1.1.5.0')  #主机名oid
+    bind_name = netsnmp.VarList(oid_name)
+
+    oid_cpu = netsnmp.Varbind('.1.3.6.1.2.1.25.3.3.1.2')  #CPU负载oid
+    bind_cpu = netsnmp.VarList(oid_cpu)
+
+    oid_mem = netsnmp.Varbind('.1.3.6.1.2.1.25.2.2.0')  #内存总数oid
+    bind_mem = netsnmp.VarList(oid_mem)
+
+    oid_ip_name = netsnmp.Varbind('.1.3.6.1.2.1.2.2')
+    #1.3.6.1.2.1.2.2  1.3.6.1.2.1.2.2.1.2
+    oid_ip = netsnmp.Varbind('.1.3.6.1.2.1.4.20.1.1')  #IP地址oid
+    bind_ip = netsnmp.VarList(oid_ip_name,oid_ip)
+
+    snmp_name = snmpsession.get(bind_name)
+    snmp_cpu = snmpsession.walk(bind_cpu)
+    snmp_mem = snmpsession.get(bind_mem)
+    snmp_ip = snmpsession.walk(bind_ip)
+
+    #result_name = snmp_name[0].replace("'","").replace("(","").replace(")","")
+    #result_mem = snmp_mem[0].replace("'","").replace("(","").replace(")","")
+    #result_ip1 = snmp_ip[0].replace("'","").replace("(","").replace(")","").replace(" ","")
+    #result_ip2 = snmp_ip[1].replace("'","").replace("(","").replace(")","").replace(" ","")
+    result_name = snmp_name[0]
+
+    i = 0
+    for data in snmp_cpu:
+      if data != '':
+        i += 1
+    result_cpu = i
+    result_mem = int(snmp_mem[0])/1024
+    result_ip1 = snmp_ip[0]
+    result_ip2 = snmp_ip[1]
+    result = {}
+    result['code'] = 0
+    result['host'] = result_name
+    result['cpu'] = result_cpu
+    result['mem'] = result_mem
+    result['ip'] = result_ip1
+    return HttpResponse(json.dumps(result), content_type="application/json")
+  else:
+    projects = Project.objects.all().order_by('alias')
+    rsp = render(request, 'user_index.html', locals())
+    return HttpResponse(rsp)

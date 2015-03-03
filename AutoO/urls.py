@@ -20,12 +20,12 @@ urlpatterns += patterns('common.views',
     url(r'^chgpass/$', 'USER_CHGPASS'),
     
     url(r'^sys/(?P<module>.*)/(?P<action>.*)$', 'sys'),
-    url(r'^test/$', 'display_meta'),
 )
 
 urlpatterns += patterns('AutoO.views',
     url(r'^admin/$', 'admin'),
     url(r'^admin/\d$','admin_display'),
     url(r'^admin/(?P<module>.*)/(?P<action>.*)$', 'admin'),
-    url(r'^asset/$', 'asset')
+    url(r'^asset/$', 'asset'),
+    url(r'^test/$', 'module_test'),
 )

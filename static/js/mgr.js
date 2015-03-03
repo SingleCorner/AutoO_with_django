@@ -4,14 +4,16 @@
  * 
 */
 $(document).ready(function() {
-	$(document).scroll(navbar_ajust);
-	navbar_ajust();
+  $(document).scroll(navbar_ajust);
+  navbar_ajust();
   
   $('#Proj_name').focus();
   $('#Proj_add').submit(insProj);
-	$('#Asset_add').submit(insAsset);
-	$('#Asset_upt').submit(uptAsset);
-	$('#Accnt_add').submit(insAccnt);
+  $('#Asset_add').submit(insAsset);
+  $('#Asset_upt').submit(uptAsset);
+  $('#Accnt_add').submit(insAccnt);
+
+  $('#GetServer').click(GetServer);
 });
 
 /*
@@ -306,4 +308,22 @@ function accnt_op(id,ctrl) {
 		},
 		dataType: 'json'
 	});
+}
+
+function GetServer(){
+	ipaddr = $('#ipaddr').val();
+	$.ajax({
+		type: 'POST',
+		url: '/test/',
+		data: {
+			'submit': '',
+			'ipaddr': ipaddr,
+		},
+		success: function(data, status, xhr) {
+			$('#hostname').val(data.host);
+			$('#cpu').val(data.cpu);
+			$('#ram').val(data.mem);
+			$('#IPpool').val(data.ip);
+		}
+	})
 }

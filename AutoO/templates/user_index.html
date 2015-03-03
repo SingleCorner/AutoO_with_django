@@ -1,5 +1,33 @@
-{% extends "user_base.html"%}
+{% extends "admin_base.html"%}
 
 {% block app %}
-    <div>Just For testsss</div>
+    <p></p>
+    <div>
+    输入IP地址 <input type="text" id="ipaddr" name="ipaddr" value="112.124.67.134" />
+    <button id="GetServer" class="getinfo">开始获取</button><br /><hr />
+    <form method="post">
+        系统类型
+        <select name="ostype" class="ostype">
+            <option value="0">Linux</option>
+            <option value="1">Windows</option>
+        </select>
+        所属项目
+        <select>
+            <option value="">所属项目</option>
+        {% for proj in projects %}
+            <option value="{{ proj.id }}">{{ proj.name }}</option>
+        {% endfor %}
+        </select>
+        描述<input type="text" id="desc" name="desc" /><br />
+        主机名<input type="text" id="hostname" name="hostname" />
+        CPU核数<input type="text" size="3" id="cpu" name="cpu" />
+        内存大小<input type="text" size="8" id="ram" name="ram">MB<br />
+        IP地址<br />
+        <textarea id="IPpool">
+        </textarea>
+
+
+
+    </form>
+    </div>
 {% endblock %}
