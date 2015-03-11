@@ -29,6 +29,9 @@
 				</div>
 				<div>
 				<div class="title_container"><h1>新资产</h1></div><br>
+			    输入IP地址 <input type="text" id="ipaddr" name="ipaddr" value="112.124.67.134" />
+			    <button id="GetServer" class="getinfo">开始获取</button>
+			    <p></p>
 				<form id="Asset_add">
 					<select id="Asset_proj" name="Asset_proj">
 						<option>所属项目</option>
@@ -36,12 +39,6 @@
 						<option value="{{ proj.id }}">{{ proj.name }}</option>
 						{% endfor %}
 					</select>
-					<input type="text" size="15" id="Asset_ip" placeholder="172.21.1.1">
-					<input type="text" size="15" id="Asset_ip_2" placeholder="192.168.1.1">
-					<input type="text" size="8" id="Asset_cpu" placeholder="CPU（核）">
-					<input type="text" size="8" id="Asset_mem" placeholder="MEM（G）">
-					<input type="text" size="8" id="Asset_disk" placeholder="DISK（G）">
-					
 					<select id="Asset_type" name="Asset_type">
 						<option value="1">物理机</option>
 						<option value="2" selected>虚拟机</option>
@@ -52,6 +49,14 @@
 						<option value="DB">DB</option>
 					</select>
 					描述<input type="text" size="15" id="Asset_desc" placeholder="电商前端应用1">
+					<p></p>
+					<input type="text" size="8" id="Asset_hostname" placeholder="主机名">
+					<input type="text" size="8" id="Asset_cpu" placeholder="CPU（核）">
+					<input type="text" size="8" id="Asset_mem" placeholder="MEM（G）">
+					<input type="text" size="8" id="Asset_disk" placeholder="DISK（G）">
+					<p></p>
+					<textarea name="Asset_ip" id="Asset_ip" placeholder="172.21.1.1"></textarea>
+					<p></p>
 					<input type="submit" value="添加资产" />
 					<span id="Asset_stat"></span>
 				</form>

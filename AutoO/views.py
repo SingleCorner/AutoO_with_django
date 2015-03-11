@@ -164,7 +164,6 @@ def admin(request, module="", action=""):
         if action == "add":
           asset_pid = request.POST['pid']
           asset_ip = request.POST['ip']
-          asset_ip_2 = request.POST['ip_2']
           asset_cpu = request.POST['cpu']
           asset_mem = request.POST['mem']
           asset_disk = request.POST['disk']
@@ -180,7 +179,6 @@ def admin(request, module="", action=""):
           if request.session['user_sys'] or asset_pid == request.session['user_proj']:
             obj = Server(pid=pid,
                          ip=asset_ip,
-                         ip_2=asset_ip_2,
                          cpu=asset_cpu,
                          mem=asset_mem,
                          disk=asset_disk,
@@ -399,20 +397,14 @@ def module_test(request):
     oid_mem = netsnmp.Varbind('.1.3.6.1.2.1.25.2.2.0')  #内存总数oid
     bind_mem = netsnmp.VarList(oid_mem)
 
-    oid_ip_name = netsnmp.Varbind('.1.3.6.1.2.1.2.2')
-    #1.3.6.1.2.1.2.2  1.3.6.1.2.1.2.2.1.2
     oid_ip = netsnmp.Varbind('.1.3.6.1.2.1.4.20.1.1')  #IP地址oid
-    bind_ip = netsnmp.VarList(oid_ip_name,oid_ip)
+    bind_ip = netsnmp.VarList(oid_ip)
 
     snmp_name = snmpsession.get(bind_name)
     snmp_cpu = snmpsession.walk(bind_cpu)
     snmp_mem = snmpsession.get(bind_mem)
     snmp_ip = snmpsession.walk(bind_ip)
 
-    #result_name = snmp_name[0].replace("'","").replace("(","").replace(")","")
-    #result_mem = snmp_mem[0].replace("'","").replace("(","").replace(")","")
-    #result_ip1 = snmp_ip[0].replace("'","").replace("(","").replace(")","").replace(" ","")
-    #result_ip2 = snmp_ip[1].replace("'","").replace("(","").replace(")","").replace(" ","")
     result_name = snmp_name[0]
 
     i = 0
@@ -421,14 +413,27 @@ def module_test(request):
         i += 1
     result_cpu = i
     result_mem = int(snmp_mem[0])/1024
-    result_ip1 = snmp_ip[0]
-    result_ip2 = snmp_ip[1]
+    
+    result_ip = ""
+    for data in snmp_ip:
+      if data != '127.0.0.1':
+        oid = '.1.3.6.1.2.1.4.20.1.2.' + str(data)
+        oid_ip_index = netsnmp.Varbind(oid)
+        bind_ip_index = netsnmp.VarList(oid_ip_index)
+        snmp_ip_index = snmpsession.get(bind_ip_index)
+        ip_index = snmp_ip_index[0]
+        oid_ip_name = netsnmp.Varbind('.1.3.6.1.2.1.2.2.1.2.' + str(ip_index))
+        bind_ip_name = netsnmp.VarList(oid_ip_name)
+        snmp_ip_name = snmpsession.get(bind_ip_name)
+        ip_name = snmp_ip_name[0]
+        result_ip = result_ip + ip_name + ':' + data + '\r\n'
+
     result = {}
     result['code'] = 0
     result['host'] = result_name
     result['cpu'] = result_cpu
     result['mem'] = result_mem
-    result['ip'] = result_ip1
+    result['ip'] = result_ip
     return HttpResponse(json.dumps(result), content_type="application/json")
   else:
     projects = Project.objects.all().order_by('alias')

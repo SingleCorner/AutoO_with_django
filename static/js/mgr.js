@@ -112,7 +112,6 @@ function insAsset(evt) {
 	
 	pid = $('#Asset_proj').val();
 	ip = $('#Asset_ip').val();
-	ip_2 = $('#Asset_ip_2').val();
 	cpu = $('#Asset_cpu').val();
 	mem = $('#Asset_mem').val();
 	disk = $('#Asset_disk').val();
@@ -120,13 +119,14 @@ function insAsset(evt) {
 	srv = $('#Asset_srv').val();
 	desc = $('#Asset_desc').val();
 
+	alert(ip);
+
 	$.ajax({
 		type: 'POST',
-		url: '/admin/servers/add',
+		//url: '/admin/servers/add',
 		data: {
 			'pid': pid,
 			'ip': ip,
-			'ip_2': ip_2,
 			'cpu': cpu,
 			'mem': mem,
 			'disk': disk,
@@ -134,7 +134,7 @@ function insAsset(evt) {
 			'srv': srv,
 			'desc': desc,
 		},
-    timeout: 5000,
+    	timeout: 5000,
 		success: function(data, status, xhr) {
 			if (data.code == 1) {
 				alert(data.message);
@@ -143,9 +143,9 @@ function insAsset(evt) {
 				alert(data.message);
 			}
 		},
-    error: function(data) {
-      alert('操作超时');
-    },
+    	error: function(data) {
+     		alert('操作超时');
+    	},
 		dataType: 'json'
 	});
 	
@@ -320,10 +320,11 @@ function GetServer(){
 			'ipaddr': ipaddr,
 		},
 		success: function(data, status, xhr) {
-			$('#hostname').val(data.host);
-			$('#cpu').val(data.cpu);
-			$('#ram').val(data.mem);
-			$('#IPpool').val(data.ip);
+			$('#Asset_hostname').val(data.host);
+			$('#Asset_cpu').val(data.cpu);
+			$('#Asset_mem').val(data.mem);
+			$('#Asset_ip').val(data.ip);
+			$('#Asset_ip').html(data.ip);
 		}
 	})
 }

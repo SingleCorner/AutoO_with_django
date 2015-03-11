@@ -12,67 +12,8 @@ from AutoO.apps.models import Project
 
 def USER_LOGIN(request):
     if 'loginToken' in request.session:
-      if 'submit' in request.POST:
-        ipaddr = request.POST['ipaddr']
-      else:
-        ipaddr = '112.124.67.134'
-        pass
-        community = "public"
-        snmpsession = netsnmp.Session(Version = 2, DestHost = ipaddr)
-        oid_name = netsnmp.Varbind('.1.3.6.1.2.1.1.5.0')
-        bind_name = netsnmp.VarList(oid_name)
-
-        oid_cpu = netsnmp.Varbind('.1.3.6.1.2.1.25.3.3.1.2')
-        bind_cpu = netsnmp.VarList(oid_cpu)
-
-        oid_mem = netsnmp.Varbind('.1.3.6.1.2.1.25.2.2.0')
-        bind_mem = netsnmp.VarList(oid_mem)
-
-        oid_ip = netsnmp.Varbind('.1.3.6.1.2.1.4.20.1.1')
-        bind_ip = netsnmp.VarList(oid_ip)
-
-        #oid_disk_nix = netsnmp.Varbind('.1.3.6.1.4.1.2021.9.1.6')
-        #bind_disk = netsnmp.VarList(oid_disk_nix)
-
-        snmp_name = snmpsession.get(bind_name)
-        snmp_cpu = snmpsession.walk(bind_cpu)
-        snmp_mem = snmpsession.get(bind_mem)
-        snmp_ip = snmpsession.walk(bind_ip)
-        #snmp_dsk = snmpsession.walk(bind_disk)
-
-        snmp_name = str(snmp_name).lstrip('(').rstrip(')').split(',')
-        snmp_cpu = str(snmp_cpu).split(',')
-        snmp_mem = str(snmp_mem).split(',')
-        snmp_ip = str(snmp_ip).split(',')
-        #snmp_dsk = str(snmp_dsk).split(',')
-        
-        result_name = snmp_name[0].replace("'","").replace("(","").replace(")","")
-        #analys the cpu core number
-        core = 0
-        for data in snmp_cpu:
-          data = data.replace("'","").replace("(","").replace(")","")
-          if data != "":
-            core += 1
-        if core >= 1:
-          result_cpu = core
-        else:
-          result_cpu = "获取失败"
-        result_mem = snmp_mem[0].replace("'","").replace("(","").replace(")","")
-        result_mem = int(result_mem)/1024
-        result_ip1 = snmp_ip[0].replace("'","").replace("(","").replace(")","").replace(" ","")
-        result_ip2 = snmp_ip[1].replace("'","").replace("(","").replace(")","").replace(" ","")
-        if result_ip1 == "127.0.0.1":
-          result_ip1 = "不存在"
-        if result_ip2 == "127.0.0.1":
-          result_ip2 = "不存在"
-        oid_test = netsnmp.Varbind('.1.3.6.1.2.1.2.2.1.2')
-        bind_test = netsnmp.VarList(oid_test)
-        snmp_test = snmpsession.walk(bind_test)
-        result_test = snmp_test[0].replace("'","").replace("(","").replace(")","").lstrip(" ")
-        #result_dsk = snmp_dsk[0].replace("'","").replace("(","").replace(")","").replace(" ","")
-        #result_dsk = int(result_dsk)/1024/1024
-        rsp = render(request, 'user_index.html', locals())
-        return HttpResponse(rsp)
+      rsp = render(request, 'user_index.html', locals())
+      return HttpResponse(rsp)
     else:
         if 'a' in request.GET and request.GET['a'] == "login":
           user = request.POST['username']
