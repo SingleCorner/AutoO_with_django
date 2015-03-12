@@ -119,11 +119,9 @@ function insAsset(evt) {
 	srv = $('#Asset_srv').val();
 	desc = $('#Asset_desc').val();
 
-	alert(ip);
-
 	$.ajax({
 		type: 'POST',
-		//url: '/admin/servers/add',
+		url: '/admin/servers/add',
 		data: {
 			'pid': pid,
 			'ip': ip,
