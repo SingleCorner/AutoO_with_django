@@ -310,12 +310,14 @@ function accnt_op(id,ctrl) {
 
 function GetServer(){
 	ipaddr = $('#ipaddr').val();
+	data_trans = 1;
+
 	$.ajax({
 		type: 'POST',
-		url: '/test/',
+		url: './getinfo',
 		data: {
-			'submit': '',
 			'ipaddr': ipaddr,
+			'data_trans': data_trans,
 		},
 		success: function(data, status, xhr) {
 			$('#Asset_hostname').val(data.host);
