@@ -193,7 +193,6 @@ def admin(request, module="", action=""):
             result_cpu = i
 
             result_mem = int(snmp_mem[0])/1024
-            result_mem = 4095
             if data_trans == "1":
               if result_mem <= 512:
                 result_mem = 512
