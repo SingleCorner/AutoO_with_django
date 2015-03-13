@@ -16,7 +16,6 @@
 								<option value="DB">DB</option>
 							</select>
 							<input type="text" name="ip" placeholder="第一IP地址" />
-							<input type="text" name="ip_2" placeholder="第二IP地址" />
 							<select name="status">
 								<option value="">所有</option>
 								<option value="0">待释放</option>
@@ -34,11 +33,12 @@
 					<tr>
 						<th>项目</th>
 						<th>IP</th>
+						<th>主机名</th>
 						<th>描述</th>
 						<th>类型</th>
-            <th>CPU(核)</th>
-            <th>MEM(G)</th>
-            <th>DISK(G)</th>
+            			<th>CPU(核)</th>
+            			<th>MEM(G)</th>
+            			<th>DISK(G)</th>
 						<th>应用</th>
 						<th>状态</th>
 						<th>cacti</th>
@@ -47,12 +47,8 @@
           {% for data in data_list %}
             <tr>
               <td>{{ data.pid.name }}</td>
-              <td>
-                {{ data.ip }}
-								{% if data.ip_2 %}
-									<br>{{ data.ip_2 }}
-								{% endif %}
-              </td>
+              <td title="{{ data.ip }}">{{ data.ip }}</td>
+              <td>{{ data.hostname }}</td>
               <td title="{{ data.desc }}">{{ data.desc }}</td>
               <td>{{ data.type }}</td>
               <td>{{ data.cpu }}</td>

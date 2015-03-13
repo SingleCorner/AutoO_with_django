@@ -26,7 +26,7 @@ class Server(models.Model):
     id = models.IntegerField(primary_key=True)
     pid = models.ForeignKey(Project, db_column='pid', blank=True, null=True)
     ip = models.CharField(max_length=15, blank=True)
-    ip_2 = models.CharField(max_length=15, blank=True)
+    hostname = models.CharField(max_length=255, blank=True)
     cpu = models.CharField(max_length=4)
     mem = models.CharField(max_length=4)
     disk = models.CharField(max_length=4)

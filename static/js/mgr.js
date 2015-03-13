@@ -41,7 +41,7 @@ function navbar_ajust() {
 function insProj(evt) {
   evt.preventDefault();
   
-	alias_name = $('#Proj_alias').val();
+  alias_name = $('#Proj_alias').val();
   name = $('#Proj_name').val();
   remark = $('#Proj_remark').val();
 	
@@ -323,7 +323,7 @@ function GetServer(){
 			$('#Asset_hostname').val(data.host);
 			$('#Asset_cpu').val(data.cpu);
 			$('#Asset_mem').val(data.mem);
-			$('#Asset_ip').val(data.ip);
+			//$('#Asset_ip').val(data.ip);
 			$('#Asset_ip').html(data.ip);
 		}
 	})

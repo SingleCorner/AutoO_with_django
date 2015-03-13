@@ -36,14 +36,6 @@ def asset(request):
             a = 1
         else:
           request.session['query_data']['ip__contains'] = request.POST['ip']
-      if 'ip_2' in request.POST:
-        if request.POST['ip_2'] == "":
-          try:
-            request.session['query_data'].pop('ip_2__contains')
-          except:
-            a = 1
-        else:
-          request.session['query_data']['ip_2__contains'] = request.POST['ip_2']
       if 'srv' in request.POST:
         if request.POST['srv'] == "":
           try:
@@ -67,8 +59,6 @@ def asset(request):
         request.session['query_data']['pid'] = request.POST['pid']
       if 'ip' in request.POST and request.POST['ip'] != "":
         request.session['query_data']['ip__contains'] = request.POST['ip']
-      if 'ip_2' in request.POST and request.POST['ip_2'] != "":
-        request.session['query_data']['ip_2__contains'] = request.POST['ip_2']
       if 'srv' in request.POST and request.POST['srv'] != "":
         request.session['query_data']['srv'] = request.POST['srv']
       if 'status' in request.POST and request.POST['status'] != "":
@@ -211,7 +201,8 @@ def admin(request, module="", action=""):
                 bind_ip_name = netsnmp.VarList(oid_ip_name)
                 snmp_ip_name = snmpsession.get(bind_ip_name)
                 ip_name = snmp_ip_name[0]
-                result_ip = result_ip + ip_name + ':' + data + '\r\n'
+                result_ip = result_ip + data + '<br>'
+                #result_ip = result_ip + ip_name + ':' + data + '<br>'
 
             result = {}
             result['code'] = 0
@@ -281,7 +272,6 @@ def admin(request, module="", action=""):
           if 'update' in request.GET:
             asset_pid = request.POST['pid']
             asset_ip = request.POST['ip']
-            asset_ip_2 = request.POST['ip_2']
             asset_cpu = request.POST['cpu']
             asset_mem = request.POST['mem']
             asset_disk = request.POST['disk']
@@ -299,7 +289,6 @@ def admin(request, module="", action=""):
             if request.session['user_sys'] or asset_pid == request.session['user_proj']:
               try:
                 Server.objects.filter(id=action).update(ip=asset_ip,
-                  ip_2=asset_ip_2,
                   cpu=asset_cpu,
                   mem=asset_mem,
                   disk=asset_disk,
@@ -359,14 +348,6 @@ def admin(request, module="", action=""):
                   a = 1
               else:
                 request.session['query_data']['ip__contains'] = request.POST['ip']
-            if 'ip_2' in request.POST:
-              if request.POST['ip_2'] == "":
-                try:
-                  request.session['query_data'].pop('ip_2__contains')
-                except:
-                  a = 1
-              else:
-                request.session['query_data']['ip_2__contains'] = request.POST['ip_2']
             if 'srv' in request.POST:
               if request.POST['srv'] == "":
                 try:
@@ -390,8 +371,6 @@ def admin(request, module="", action=""):
               request.session['query_data']['pid'] = request.POST['pid']
             if 'ip' in request.POST and request.POST['ip'] != "":
               request.session['query_data']['ip__contains'] = request.POST['ip']
-            if 'ip_2' in request.POST and request.POST['ip_2'] != "":
-              request.session['query_data']['ip_2__contains'] = request.POST['ip_2']
             if 'srv' in request.POST and request.POST['srv'] != "":
               request.session['query_data']['srv'] = request.POST['srv']
             if 'status' in request.POST and request.POST['status'] != "":
@@ -446,59 +425,3 @@ def admin(request, module="", action=""):
       return HttpResponse(rsp)
   else:
     return HttpResponseRedirect('/')
-
-def module_test(request):
-  if 'submit' in request.POST:
-    ipaddr = request.POST['ipaddr']
-    snmpsession = netsnmp.Session(Version = 2, DestHost = ipaddr, Timeout=50000, ErrorStr='Cannot connect')
-    oid_name = netsnmp.Varbind('.1.3.6.1.2.1.1.5.0')  #主机名oid
-    bind_name = netsnmp.VarList(oid_name)
-
-    oid_cpu = netsnmp.Varbind('.1.3.6.1.2.1.25.3.3.1.2')  #CPU负载oid
-    bind_cpu = netsnmp.VarList(oid_cpu)
-
-    oid_mem = netsnmp.Varbind('.1.3.6.1.2.1.25.2.2.0')  #内存总数oid
-    bind_mem = netsnmp.VarList(oid_mem)
-
-    oid_ip = netsnmp.Varbind('.1.3.6.1.2.1.4.20.1.1')  #IP地址oid
-    bind_ip = netsnmp.VarList(oid_ip)
-
-    snmp_name = snmpsession.get(bind_name)
-    snmp_cpu = snmpsession.walk(bind_cpu)
-    snmp_mem = snmpsession.get(bind_mem)
-    snmp_ip = snmpsession.walk(bind_ip)
-
-    result_name = snmp_name[0]
-
-    i = 0
-    for data in snmp_cpu:
-      if data != '':
-        i += 1
-    result_cpu = i
-    result_mem = int(snmp_mem[0])/1024
-    
-    result_ip = ""
-    for data in snmp_ip:
-      if data != '127.0.0.1':
-        oid = '.1.3.6.1.2.1.4.20.1.2.' + str(data)
-        oid_ip_index = netsnmp.Varbind(oid)
-        bind_ip_index = netsnmp.VarList(oid_ip_index)
-        snmp_ip_index = snmpsession.get(bind_ip_index)
-        ip_index = snmp_ip_index[0]
-        oid_ip_name = netsnmp.Varbind('.1.3.6.1.2.1.2.2.1.2.' + str(ip_index))
-        bind_ip_name = netsnmp.VarList(oid_ip_name)
-        snmp_ip_name = snmpsession.get(bind_ip_name)
-        ip_name = snmp_ip_name[0]
-        result_ip = result_ip + ip_name + ':' + data + '\r\n'
-
-    result = {}
-    result['code'] = 0
-    result['host'] = result_name
-    result['cpu'] = result_cpu
-    result['mem'] = result_mem
-    result['ip'] = result_ip
-    return HttpResponse(json.dumps(result), content_type="application/json")
-  else:
-    projects = Project.objects.all().order_by('alias')
-    rsp = render(request, 'user_index.html', locals())
-    return HttpResponse(rsp)
