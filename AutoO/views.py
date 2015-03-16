@@ -12,7 +12,7 @@ import copy, pprint, netsnmp
 from apps.models import *
 from common.models import *
 
-def asset(request):
+def server(request):
   if 'page' in request.GET and request.GET['page'].isdigit():
     page_get = int(float(request.GET['page']))
   else:
@@ -218,6 +218,7 @@ def admin(request, module="", action=""):
         elif action == "add":
           asset_pid = request.POST['pid']
           asset_ip = request.POST['ip']
+          asset_hostname = request.POST['hostname']
           asset_cpu = request.POST['cpu']
           asset_mem = request.POST['mem']
           asset_disk = request.POST['disk']
@@ -233,6 +234,7 @@ def admin(request, module="", action=""):
           if request.session['user_sys'] or asset_pid == request.session['user_proj']:
             obj = Server(pid=pid,
                          ip=asset_ip,
+                         hostname=asset_hostname,
                          cpu=asset_cpu,
                          mem=asset_mem,
                          disk=asset_disk,
@@ -272,6 +274,7 @@ def admin(request, module="", action=""):
           if 'update' in request.GET:
             asset_pid = request.POST['pid']
             asset_ip = request.POST['ip']
+            asset_hostname = request.POST['hostname']
             asset_cpu = request.POST['cpu']
             asset_mem = request.POST['mem']
             asset_disk = request.POST['disk']
@@ -289,6 +292,7 @@ def admin(request, module="", action=""):
             if request.session['user_sys'] or asset_pid == request.session['user_proj']:
               try:
                 Server.objects.filter(id=action).update(ip=asset_ip,
+                  hostname=asset_hostname,
                   cpu=asset_cpu,
                   mem=asset_mem,
                   disk=asset_disk,
