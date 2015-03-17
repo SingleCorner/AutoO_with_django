@@ -189,7 +189,8 @@ def admin(request, module="", action=""):
               else:
                 result_mem = (result_mem/1024 + 1) * 1024
 
-            result_ip = ""
+            result_ip = []
+            i = 0
             for data in snmp_ip:
               if data != '127.0.0.1':
                 oid = '.1.3.6.1.2.1.4.20.1.2.' + str(data)
@@ -201,15 +202,14 @@ def admin(request, module="", action=""):
                 bind_ip_name = netsnmp.VarList(oid_ip_name)
                 snmp_ip_name = snmpsession.get(bind_ip_name)
                 ip_name = snmp_ip_name[0]
-                result_ip = result_ip + data + '<br>'
-                #result_ip = result_ip + ip_name + ':' + data + '<br>'
+                result_ip.append(data)
 
             result = {}
             result['code'] = 0
             result['host'] = result_name
             result['cpu'] = result_cpu
             result['mem'] = result_mem
-            result['ip'] = result_ip
+            result['ip'] = "|".join(result_ip)
             return HttpResponse(json.dumps(result), content_type="application/json")
           else:
             projects = Project.objects.all().order_by('alias')

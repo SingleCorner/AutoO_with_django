@@ -15,6 +15,7 @@ $(document).ready(function() {
 
   $('#GetServer').click(GetServer);
 });
+  //$('.ip_disp').html().replace("|","<br>");
 
 /*
  * 基础控制模块
@@ -322,11 +323,12 @@ function GetServer(){
 			'data_trans': data_trans,
 		},
 		success: function(data, status, xhr) {
+			ip = data.ip.replace("|","\n")
 			$('#Asset_hostname').val(data.host);
 			$('#Asset_cpu').val(data.cpu);
 			$('#Asset_mem').val(data.mem);
-			//$('#Asset_ip').val(data.ip);
-			$('#Asset_ip').html(data.ip);
+			$('#Asset_ip').val(ip);
+			//$('#Asset_ip').html(data.ip_disp);
 		}
 	})
 }
