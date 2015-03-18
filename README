@@ -12,6 +12,14 @@ AutoO -- 自动化运维平台
 2.wiki --- 用于对工单的操作方法提供文档。
 3.salt --- 用于统一远程配置，文件分发收集等。
 
+开发环境
+Python2.7.8 on Django1.7.6 + MYSQL-python + netsnmp1.5.6(自行编译，方法见www.net-snmp.org)
+数据库请用manage.py自带方法建表，配置文件中的数据库密码非本人常用密码，好奇宝宝可以试一试。
+
+联系方式
+Gmail: sinerwr@gmail.com
+QQ & Wechat: Only for contributor
+
 ==========================
 
 当前进度
