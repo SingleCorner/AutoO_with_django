@@ -327,7 +327,7 @@ function GetServer(){
 			$('#Asset_hostname').val(data.host);
 			$('#Asset_cpu').val(data.cpu);
 			$('#Asset_mem').val(data.mem);
-			$('#Asset_ip').val(ip);
+			$('#Asset_ip').val(data.ip);
 			//$('#Asset_ip').html(data.ip_disp);
 		}
 	})
