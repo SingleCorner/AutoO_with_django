@@ -14,6 +14,8 @@ $(document).ready(function() {
   $('#Accnt_add').submit(insAccnt);
 
   $('#GetServer').click(GetServer);
+
+  $('#addAssetForm').hide();
 });
   //$('.ip_disp').html().replace("|","<br>");
 
@@ -100,6 +102,20 @@ function delProj(id) {
     },
 		dataType: 'json'
 	});
+}
+
+/*
+ * 资产控制模块
+ * Author: sinerwr
+ * 资产控制：显示表单
+ * 
+*/
+function loadAssetForm() {
+	if ($('#addAssetForm').is(':hidden')) {
+		$('#addAssetForm').show();
+	} else {
+		$('#addAssetForm').hide();
+	}
 }
 
 /*
@@ -328,7 +344,7 @@ function GetServer(){
 			$('#Asset_cpu').val(data.cpu);
 			$('#Asset_mem').val(data.mem);
 			$('#Asset_ip').val(data.ip);
-			//$('#Asset_ip').html(data.ip_disp);
+			$('#Asset_ip_disp').val(data.ip_disp);
 		}
 	})
 }

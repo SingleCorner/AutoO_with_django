@@ -210,6 +210,7 @@ def admin(request, module="", action=""):
             result['cpu'] = result_cpu
             result['mem'] = result_mem
             result['ip'] = "|".join(result_ip)
+            result['ip_disp'] = result['ip'].replace("|","\r\n")
             return HttpResponse(json.dumps(result), content_type="application/json")
           else:
             projects = Project.objects.all().order_by('alias')

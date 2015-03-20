@@ -27,39 +27,42 @@
 		</span>
 	</div>
 	<div>
-		<div class="title_container"><h1><button>添加资产</button></h1></div><br>
-		输入IP地址 <input type="text" id="ipaddr" name="ipaddr" value="112.124.67.134" />
-		<button id="GetServer" class="getinfo">开始获取</button>
-		<p></p>
-		<form id="Asset_add">
-			<select id="Asset_proj" name="Asset_proj">
-				<option>所属项目</option>
-				{% for proj in projects %}
-				<option value="{{ proj.id }}">{{ proj.name }}</option>
-				{% endfor %}
-			</select>
-			<select id="Asset_type" name="Asset_type">
-				<option value="1">物理机</option>
-				<option value="2" selected>虚拟机</option>
-			</select>
-			<select id="Asset_srv" name="Asset_srv">
-				<option value="">应用类型</option>
-				<option value="APP">APP</option>
-				<option value="DB">DB</option>
-			</select>
-			描述<input type="text" size="12" id="Asset_desc" placeholder="电商前端应用1">
+		<div class="title_container"><h1><button onclick="loadAssetForm()">添加资产</button></h1></div><br>
+		<div id="addAssetForm">
+			输入IP地址 <input type="text" id="ipaddr" name="ipaddr" value="112.124.67.134" />
+			<button id="GetServer" class="getinfo">开始获取</button>
 			<p></p>
-			<input type="text" size="20" id="Asset_hostname" placeholder="主机名">
-			<input type="text" size="8" id="Asset_cpu" placeholder="CPU（核）">
-			<input type="text" size="8" id="Asset_mem" placeholder="RAM(MB)">
-			<input type="text" size="8" id="Asset_disk" placeholder="DISK(GB)">
-			<p></p>
-			<textarea id="Asset_ip" rows=3 cols=19 placeholder="192.168.168.168"></textarea>
-			<p></p>
-			<input type="submit" value="添加资产" />
-			<input type="reset" value="清除数据">
-			<span id="Asset_stat"></span>
-		</form>
+			<form id="Asset_add">
+				<select id="Asset_proj" name="Asset_proj">
+					<option>所属项目</option>
+					{% for proj in projects %}
+					<option value="{{ proj.id }}">{{ proj.name }}</option>
+					{% endfor %}
+				</select>
+				<select id="Asset_type" name="Asset_type">
+					<option value="1">物理机</option>
+					<option value="2" selected>虚拟机</option>
+				</select>
+				<select id="Asset_srv" name="Asset_srv">
+					<option value="">应用类型</option>
+					<option value="APP">APP</option>
+					<option value="DB">DB</option>
+				</select>
+				描述<input type="text" size="12" id="Asset_desc" placeholder="电商前端应用1">
+				<p></p>
+				<input type="text" size="20" id="Asset_hostname" placeholder="主机名">
+				<input type="text" size="8" id="Asset_cpu" placeholder="CPU（核）">
+				<input type="text" size="8" id="Asset_mem" placeholder="RAM(MB)">
+				<input type="text" size="8" id="Asset_disk" placeholder="DISK(GB)">
+				<p></p>
+				<textarea id="Asset_ip_disp" rows=3 cols=19 placeholder="192.168.168.168"></textarea>
+				<input type="hidden" id="Asset_ip">
+				<p></p>
+				<input type="submit" value="添加资产" />
+				<input type="reset" value="清除数据">
+				<span id="Asset_stat"></span>
+			</form>
+		</div>
 	</div>
 	<div id="APP_listStaff">
 		<div class="title_container"><h1>待宰羔羊</h1></div><br />
