@@ -13,6 +13,11 @@ from apps.models import *
 from common.models import *
 
 def server(request):
+  if 'loginToken' in request.session:
+    pass
+  else:
+    return HttpResponseRedirect('/')
+
   if 'page' in request.GET and request.GET['page'].isdigit():
     page_get = int(float(request.GET['page']))
   else:
