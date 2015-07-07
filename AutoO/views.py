@@ -6,7 +6,8 @@ from django.core.paginator import Paginator
 import hashlib
 import datetime, time
 import json
-import copy, pprint, netsnmp
+#import copy, pprint, netsnmp
+import copy, pprint
 
 #from apps.models import Project, Server
 from apps.models import *
