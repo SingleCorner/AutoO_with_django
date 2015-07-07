@@ -438,6 +438,7 @@ def admin(request, module="", action=""):
     return HttpResponseRedirect('/')
 
 def module_test(request):
-  r_string = "123"
+  r_string = "123¤456¤789"
+  s_string = r_string.split('¤')
   rsp = render(request, 'test.html', locals())
   return HttpResponse(rsp)
