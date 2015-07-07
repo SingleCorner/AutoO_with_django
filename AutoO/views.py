@@ -435,3 +435,8 @@ def admin(request, module="", action=""):
       return HttpResponse(rsp)
   else:
     return HttpResponseRedirect('/')
+
+def module_test(request):
+  r_string = "123"
+  rsp = render(request, 'test.html', locals())
+  return HttpResponse(rsp)
