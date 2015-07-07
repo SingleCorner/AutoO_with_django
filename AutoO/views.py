@@ -439,6 +439,6 @@ def admin(request, module="", action=""):
 
 def module_test(request):
   r_string = "123¤456¤789"
-  s_string = r_string.split('¤')
+  s_string = r_string.replace('¤',' ')
   rsp = render(request, 'test.html', locals())
   return HttpResponse(rsp)
