@@ -5,7 +5,8 @@ from django.contrib.auth.hashers import *
 
 import hashlib, random, string, re
 import datetime, time
-import json, netsnmp
+#import json, netsnmp
+import json
 
 from common.models import Account, Logrecord
 from AutoO.apps.models import Project
