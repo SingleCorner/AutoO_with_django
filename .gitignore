@@ -1,3 +1,4 @@
 *.pyc
 LISENSE
 .gitignore
+AutoO/setting.py
