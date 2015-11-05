@@ -8,7 +8,7 @@ env=$1
 ## GET git_tags
 git_tag=`git describe --always --tag`
 
-settings_file = "settings.py"
+settings_file="settings.py"
 ## BUILD
 cd AutoO
 cp -f settings.py.sample settings.py
