@@ -1,4 +1,6 @@
+.DS_store*
 *.pyc
+*.pyg
 LISENSE
 .gitignore
 AutoO/settings.py
