@@ -2,3 +2,4 @@
 LISENSE
 .gitignore
 AutoO/settings.py
+build.sh

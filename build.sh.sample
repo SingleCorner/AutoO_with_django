@@ -1,0 +1,25 @@
+#!/bin/bash
+# Author: Sine
+# Contact: sinerwr@gmail.com
+
+## GET params
+env=$1
+
+## GET git_tags
+git_tag=`git describe --always --tag`
+
+settings_file = "settings.py"
+## BUILD
+cd AutoO
+cp -f settings.py.$env settings.py
+if [[ "$env" == "staging" ]]; then
+	sed -i s/##MYSQL_HOST##/TYPE_YOUR_INFO/g $settings_file
+	sed -i s/##MYSQL_USER##/TYPE_YOUR_INFO/g $settings_file
+	sed -i s/##MYSQL_PASS##/TYPE_YOUR_INFO/g $settings_file
+elif [[ "$env" == "production" ]]; then
+	sed -i s/##MYSQL_HOST##/TYPE_YOUR_INFO/g $settings_file
+	sed -i s/##MYSQL_USER##/TYPE_YOUR_INFO/g $settings_file
+	sed -i s/##MYSQL_PASS##/TYPE_YOUR_INFO/g $settings_file
+else
+	echo "USAGE error: $0 staging or $0 production"
+fi
