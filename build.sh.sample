@@ -8,28 +8,27 @@ env=$1
 ## GET git_tags
 git_tag=`git describe --always --tag`
 
-settings_file="settings.py"
 ## BUILD
 cd AutoO
 cp -f settings.py.sample settings.py
 if [[ "$env" == "staging" ]]; then
-	sed -ig s/##MYSQL_default_HOST##/TYPE_YOUR_INFO/g $settings_file #host
-	sed -ig s/##MYSQL_default_NAME##/TYPE_YOUR_INFO/g $settings_file #db name
-	sed -ig s/##MYSQL_default_USER##/TYPE_YOUR_INFO/g $settings_file #username
-	sed -ig s/##MYSQL_default_PASS##/TYPE_YOUR_INFO/g $settings_file #password
-	sed -ig s/##MYSQL_master1_HOST##/TYPE_YOUR_INFO/g $settings_file #host
-	sed -ig s/##MYSQL_master1_NAME##/TYPE_YOUR_INFO/g $settings_file #db name
-	sed -ig s/##MYSQL_master1_USER##/TYPE_YOUR_INFO/g $settings_file #username
-	sed -ig s/##MYSQL_master1_PASS##/TYPE_YOUR_INFO/g $settings_file #password
+	sed -ig s/##MYSQL_default_HOST##/TYPE_YOUR_INFO/g settings.py #host
+	sed -ig s/##MYSQL_default_NAME##/TYPE_YOUR_INFO/g settings.py #db name
+	sed -ig s/##MYSQL_default_USER##/TYPE_YOUR_INFO/g settings.py #username
+	sed -ig s/##MYSQL_default_PASS##/TYPE_YOUR_INFO/g settings.py #password
+	sed -ig s/##MYSQL_master1_HOST##/TYPE_YOUR_INFO/g settings.py #host
+	sed -ig s/##MYSQL_master1_NAME##/TYPE_YOUR_INFO/g settings.py #db name
+	sed -ig s/##MYSQL_master1_USER##/TYPE_YOUR_INFO/g settings.py #username
+	sed -ig s/##MYSQL_master1_PASS##/TYPE_YOUR_INFO/g settings.py #password
 elif [[ "$env" == "production" ]]; then
-	sed -ig s/##MYSQL_default_HOST##/TYPE_YOUR_INFO/g $settings_file #host
-	sed -ig s/##MYSQL_default_NAME##/TYPE_YOUR_INFO/g $settings_file #db name
-	sed -ig s/##MYSQL_default_USER##/TYPE_YOUR_INFO/g $settings_file #username
-	sed -ig s/##MYSQL_default_PASS##/TYPE_YOUR_INFO/g $settings_file #password
-	sed -ig s/##MYSQL_master1_HOST##/TYPE_YOUR_INFO/g $settings_file #host
-	sed -ig s/##MYSQL_master1_NAME##/TYPE_YOUR_INFO/g $settings_file #db name
-	sed -ig s/##MYSQL_master1_USER##/TYPE_YOUR_INFO/g $settings_file #username
-	sed -ig s/##MYSQL_master1_PASS##/TYPE_YOUR_INFO/g $settings_file #password
+	sed -ig s/##MYSQL_default_HOST##/TYPE_YOUR_INFO/g settings.py #host
+	sed -ig s/##MYSQL_default_NAME##/TYPE_YOUR_INFO/g settings.py #db name
+	sed -ig s/##MYSQL_default_USER##/TYPE_YOUR_INFO/g settings.py #username
+	sed -ig s/##MYSQL_default_PASS##/TYPE_YOUR_INFO/g settings.py #password
+	sed -ig s/##MYSQL_master1_HOST##/TYPE_YOUR_INFO/g settings.py #host
+	sed -ig s/##MYSQL_master1_NAME##/TYPE_YOUR_INFO/g settings.py #db name
+	sed -ig s/##MYSQL_master1_USER##/TYPE_YOUR_INFO/g settings.py #username
+	sed -ig s/##MYSQL_master1_PASS##/TYPE_YOUR_INFO/g settings.py #password
 else
 	echo "USAGE error: $0 staging or $0 production"
 fi
