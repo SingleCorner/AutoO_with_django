@@ -11,15 +11,26 @@ git_tag=`git describe --always --tag`
 settings_file = "settings.py"
 ## BUILD
 cd AutoO
-cp -f settings.py.$env settings.py
+cp -f settings.py.sample settings.py
 if [[ "$env" == "staging" ]]; then
-	sed -i s/##MYSQL_HOST##/TYPE_YOUR_INFO/g $settings_file
-	sed -i s/##MYSQL_USER##/TYPE_YOUR_INFO/g $settings_file
-	sed -i s/##MYSQL_PASS##/TYPE_YOUR_INFO/g $settings_file
+	sed -i s/##MYSQL_default_HOST##/TYPE_YOUR_INFO/g $settings_file #host
+	sed -i s/##MYSQL_default_NAME##/TYPE_YOUR_INFO/g $settings_file #db name
+	sed -i s/##MYSQL_default_USER##/TYPE_YOUR_INFO/g $settings_file #username
+	sed -i s/##MYSQL_default_PASS##/TYPE_YOUR_INFO/g $settings_file #password
+	sed -i s/##MYSQL_master_HOST##/TYPE_YOUR_INFO/g $settings_file #host
+	sed -i s/##MYSQL_master_NAME##/TYPE_YOUR_INFO/g $settings_file #db name
+	sed -i s/##MYSQL_master_USER##/TYPE_YOUR_INFO/g $settings_file #username
+	sed -i s/##MYSQL_master_PASS##/TYPE_YOUR_INFO/g $settings_file #password
 elif [[ "$env" == "production" ]]; then
-	sed -i s/##MYSQL_HOST##/TYPE_YOUR_INFO/g $settings_file
-	sed -i s/##MYSQL_USER##/TYPE_YOUR_INFO/g $settings_file
-	sed -i s/##MYSQL_PASS##/TYPE_YOUR_INFO/g $settings_file
+	sed -i s/##MYSQL_default_HOST##/TYPE_YOUR_INFO/g $settings_file #host
+	sed -i s/##MYSQL_default_NAME##/TYPE_YOUR_INFO/g $settings_file #db name
+	sed -i s/##MYSQL_default_USER##/TYPE_YOUR_INFO/g $settings_file #username
+	sed -i s/##MYSQL_default_PASS##/TYPE_YOUR_INFO/g $settings_file #password
+	sed -i s/##MYSQL_master_HOST##/TYPE_YOUR_INFO/g $settings_file #host
+	sed -i s/##MYSQL_master_NAME##/TYPE_YOUR_INFO/g $settings_file #db name
+	sed -i s/##MYSQL_master_USER##/TYPE_YOUR_INFO/g $settings_file #username
+	sed -i s/##MYSQL_master_PASS##/TYPE_YOUR_INFO/g $settings_file #password
 else
 	echo "USAGE error: $0 staging or $0 production"
 fi
+cd ../
