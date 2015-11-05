@@ -1,5 +1,7 @@
 AutoO -- 自动化运维平台
 ========================
+# Deploy
+setting.py 文件已经屏蔽了关键信息，如需使用，请使用部署脚本（build.sh.sample）替换关键字符。
 
 平台规划
 1.平台由3个主模块组成，资产管理、工单流程、远程管理。
@@ -8,11 +10,11 @@ AutoO -- 自动化运维平台
 4.对工单中需要进行配置的，由远程管理进行配合，完成一键配置或进行手工配置。
 
 全站预计使用的技术
-Foreend: HTML5 + CSS3 + Bootstrap3 + AngularJS 
-Backend: Ansible + Python on Django
+Foreend: HTML5 + CSS3 + Bootstrap3
+Backend: Ansible + Python + Django
 
 开发环境
-Python2.7.8 on Django1.7.6 + MYSQL-python + netsnmp1.5.6(自行编译，方法见www.net-snmp.org)
+Python2.7.8 on Django1.8.5 + MYSQL-python + netsnmp1.5.6(自行编译，方法见www.net-snmp.org)
 数据库使用migration
 配置文件中的数据库密码非本人常用密码，好奇宝宝可以试一试。
 
