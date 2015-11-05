@@ -84,9 +84,9 @@ SESSION_FILE_PATH = '/tmp'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'localhost',
-        'NAME': 'AutoO',
-        'USER': 'AutoO',
+        'HOST': 'sinerwrmaster.mysql.rds.aliyuncs.com',
+        'NAME': 'autoo',
+        'USER': 'autoo',
         'PASSWORD': 'AMITKEOSFNRP',
     },
     'master': {
@@ -101,7 +101,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'zh-cn'
+LANGUAGE_CODE = 'zh-hans'
 
 TIME_ZONE = 'Asia/Shanghai'
 
