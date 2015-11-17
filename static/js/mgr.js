@@ -14,6 +14,7 @@ $(document).ready(function() {
   $('#Accnt_add').submit(insAccnt);
 
   $('#GetServer').click(GetServer);
+  $('#button_test').click(CORS_test);
 
   $('#addAssetForm').hide();
 });
@@ -345,6 +346,17 @@ function GetServer(){
 			$('#Asset_mem').val(data.mem);
 			$('#Asset_ip').val(data.ip);
 			$('#Asset_ip_disp').val(data.ip_disp);
+		}
+	})
+}
+
+function CORS_test(){
+	$.ajax({
+		type: 'GET',
+		url: 'http://weixin.siner.us/test',
+		success: function(data, status, xhr) {
+			console.log(data);
+			console.log(xhr);
 		}
 	})
 }
